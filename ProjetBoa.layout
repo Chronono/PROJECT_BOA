@@ -2,83 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-<<<<<<< HEAD
-=======
-	<File name="sommet.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="graph.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="559" topLine="17" />
+			<Cursor1 position="510" topLine="5" />
 		</Cursor>
 	</File>
->>>>>>> 598730fbce555b3d3bb2453f8528e9c73eeed4c5
-	<File name="Priority_queue.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="graph.cpp" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="287" topLine="0" />
+			<Cursor1 position="3809" topLine="109" />
 		</Cursor>
 	</File>
-<<<<<<< HEAD
-	<File name="Priority_queue.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="737" topLine="6" />
-=======
-	<File name="graph.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="467" topLine="0" />
->>>>>>> 598730fbce555b3d3bb2453f8528e9c73eeed4c5
-		</Cursor>
-	</File>
-	<File name="graph.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-<<<<<<< HEAD
-			<Cursor1 position="3614" topLine="99" />
-		</Cursor>
-	</File>
-	<File name="graph.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1059" topLine="6" />
-=======
-			<Cursor1 position="711" topLine="102" />
-		</Cursor>
-	</File>
-	<File name="graph.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2792" topLine="96" />
->>>>>>> 598730fbce555b3d3bb2453f8528e9c73eeed4c5
-		</Cursor>
-	</File>
-	<File name="sommet.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="374" topLine="9" />
-		</Cursor>
-	</File>
-<<<<<<< HEAD
-	<File name="main.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="167" topLine="0" />
-=======
-	<File name="arete.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="844" topLine="23" />
->>>>>>> 598730fbce555b3d3bb2453f8528e9c73eeed4c5
-		</Cursor>
-	</File>
-	<File name="arete.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="432" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="546" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="arete.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="490" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="sommet.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="369" topLine="4" />
+			<Cursor1 position="125" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

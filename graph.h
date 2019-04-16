@@ -19,7 +19,6 @@ class graphe
         graphe(std::string,std::string);
         ~graphe();
         void display() const;
-        void displayParetoSolutions();
         std::list<Arete*> parcoursPrim(bool);
         int getOrder() const;
         int getSize() const;
@@ -29,12 +28,12 @@ class graphe
 
     private:
         /// functions
-        void gen_pareto_solution();
+        std::string toBinary(int n);
+        std::vector<std::string> gen_pareto_solution();
 
         /// attributes
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
         std::unordered_map<std::string,Arete*> m_aretes;
-        std::vector<std::string> m_pareto_solutions;
 };
 
 #endif // GRAPHE_H

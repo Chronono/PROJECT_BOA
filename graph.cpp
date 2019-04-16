@@ -4,7 +4,7 @@
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
     /// ouverture du fichier
-    std::ifstream fichier(nom_fichier);
+    std::ifstream fichier("files/" + nom_fichier);
 
     if (fichier)
     {
@@ -36,7 +36,7 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 
 
     /// ouverture du fichier_weight
-    std::ifstream fichier_weight(nom_fichier_weight);
+    std::ifstream fichier_weight("files/" + nom_fichier_weight);
     int size, nbDim;
     fichier_weight >> size >> nbDim;
     for (int i=0; i < size; i++) {
@@ -49,6 +49,9 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 
     /// fermeture du fichier_weight
     fichier_weight.close();
+
+    /// génération de tous les schémasa possibles du graphe
+    std::vector<std::string> test = gen_pareto_solution();
 }
 
 void graphe::display() const{
@@ -66,13 +69,6 @@ void graphe::display() const{
         std::cout << " Arete ";
         i.second->display();
     }
-}
-
-void graphe::displayParetoSolutions()
-{
-    gen_pareto_solution();
-    for (size_t i=0; i < m_pareto_solutions.size(); i++)
-        std::cout << m_pareto_solutions[i] << std::endl;
 }
 
 std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, prim fct distance sinon fct cost
@@ -127,9 +123,33 @@ int graphe::isEulerien() const{
     else return 0;
 }
 
-void graphe::gen_pareto_solution()
+/// SOURCE DU CODE DU CONVERTISSEUR BINAIRE : INTERNET (+ modifications personnelles) ///
+std::string graphe::toBinary(int n)
 {
+    std::cout << n << " convert to ";
+    std::string r;
+    /// j'ai ajouter la condition r.size() < 8 afin de limiter la taille de la chaine renvoyée, j'ai choisit 8 car un octet correspond à 8 bits
+    while (n!=0 && r.size() < 8) {
+        r = (n%2 == 0 ? "0":"1") + r;
+        n/=2;
+    }
+    /// cette boucle sert à compléter la chaine afin de toujours renvoyer un résultat homogène
+    while (r.size() < 8) {
+        r = "0" + r;
+    }
+    std::cout << r << std::endl;
 
+    return r;
+}
+
+std::vector<std::string> graphe::gen_pareto_solution()
+{
+    int nbSolutions = (int)pow(2, getSize());
+    std::vector<std::string> solutions;
+    for (int i=0; i < nbSolutions; i++)
+        solutions.push_back(toBinary(i));
+
+    return solutions;
 }
 
 graphe::~graphe()
