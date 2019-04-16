@@ -107,11 +107,12 @@
 1555432563 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
 	"graph.h"
 
-1555432467 c:\users\bastien\projet piscine\projet boa\graph.h
+1555442724 c:\users\bastien\projet piscine\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
 	<unordered_map>
+	<unordered_set>
 	"sommet.h"
 	<list>
 	<set>
@@ -132,7 +133,7 @@
 	"arete.h"
 	<forward_list>
 
-1555430952 source:c:\users\bastien\projet piscine\projet boa\main.cpp
+1555441306 source:c:\users\bastien\projet piscine\projet boa\main.cpp
 	<iostream>
 	"graph.h"
 

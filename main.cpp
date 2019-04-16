@@ -4,5 +4,5 @@
 int main()
 {
     graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
-    testCubeTown.display();
+    testCubeTown.displayParetoSolutions();
 }

@@ -1,4 +1,4 @@
-
+#include <math.h>
 #include "graph.h"
 
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
@@ -68,6 +68,13 @@ void graphe::display() const{
     }
 }
 
+void graphe::displayParetoSolutions()
+{
+    gen_pareto_solution();
+    for (size_t i=0; i < m_pareto_solutions.size(); i++)
+        std::cout << m_pareto_solutions[i] << std::endl;
+}
+
 std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, prim fct distance sinon fct cost
     Priority_queue listArete;
     std::list<Arete*> primArete;
@@ -113,6 +120,11 @@ int graphe::isEulerien() const{
     else if (compt == 2)
         return 1;
     else return 0;
+}
+
+void graphe::gen_pareto_solution()
+{
+
 }
 
 graphe::~graphe()

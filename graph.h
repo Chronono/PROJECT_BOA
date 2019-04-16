@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include "sommet.h"
 #include <list>
 #include <set>
@@ -18,21 +19,22 @@ class graphe
         graphe(std::string,std::string);
         ~graphe();
         void display() const;
-
+        void displayParetoSolutions();
         std::list<Arete*> parcoursPrim(bool);
-
         int getOrder() const;
         int getSize() const;
-
         int isEulerien() const;
 
     protected:
 
     private:
+        /// functions
+        void gen_pareto_solution();
 
+        /// attributes
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
         std::unordered_map<std::string,Arete*> m_aretes;
-
+        std::vector<std::string> m_pareto_solutions;
 };
 
 #endif // GRAPHE_H
