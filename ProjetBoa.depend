@@ -46,14 +46,15 @@
 	"arete.h"
 	<forward_list>
 
-1555426158 source:c:\users\matthieu\desktop\projet boa\arete.cpp
+1555432763 source:c:\users\matthieu\desktop\projet boa\arete.cpp
 	"arete.h"
 
-1555426088 c:\users\matthieu\desktop\projet boa\arete.h
+1555432793 c:\users\matthieu\desktop\projet boa\arete.h
 	<vector>
 	<string>
+	<iostream>
 
-1555426579 source:c:\users\matthieu\desktop\projet boa\graph.cpp
+1555442756 source:c:\users\matthieu\desktop\projet boa\graph.cpp
 	"graph.h"
 
 1555424499 c:\users\matthieu\desktop\projet boa\graph.h
@@ -76,15 +77,15 @@
 	<queue>
 	"arete.h"
 
-1555424499 c:\users\matthieu\desktop\projet boa\priority_queue.h
+1555440482 c:\users\matthieu\desktop\projet boa\priority_queue.h
 	"sommet.h"
 	"arete.h"
-	<forward_list>
+	<list>
 
-1555424499 source:c:\users\matthieu\desktop\projet boa\priority_queue.cpp
+1555442711 source:c:\users\matthieu\desktop\projet boa\priority_queue.cpp
 	"Priority_queue.h"
 
-1555424499 source:c:\users\matthieu\desktop\projet boa\sommet.cpp
+1555433960 source:c:\users\matthieu\desktop\projet boa\sommet.cpp
 	<iostream>
 	<queue>
 	<stack>
@@ -92,7 +93,7 @@
 	<unordered_set>
 	"sommet.h"
 
-1555425804 source:c:\users\matthieu\desktop\projet boa\main.cpp
+1555442811 source:c:\users\matthieu\desktop\projet boa\main.cpp
 	<iostream>
 	"graph.h"
 

@@ -15,6 +15,7 @@ void Sommet::ajouterVoisin(const Sommet* voisin,Arete* areteAdjacent){
 }
  void Sommet::afficherData() const{
      std::cout<<"    "<<m_id<<" : "<<"(x,y)=("<<m_x<<","<<m_y<<")"<<std::endl;
+     std::cout << "nb arete : " << m_aretesAdjacent.size() << std::endl;
  }
 void Sommet::afficherVoisins() const{
     std::cout<<"  voisins :"<<std::endl;

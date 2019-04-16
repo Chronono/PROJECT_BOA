@@ -2,7 +2,8 @@
 #define ARETE_H_INCLUDED
 
 #include <vector>
-#include<string>
+#include <string>
+#include <iostream>
 
 class Arete
 {
@@ -12,6 +13,7 @@ public:
     std::vector<std::string> getVertices() const; /// retourne les indices des sommets sous forme de pair
     std::string getVertex1() const;
     std::string getVertex2() const;
+    void display() const;
     void setDistance(float);
     void setCost(float);
     float getDistance() const;

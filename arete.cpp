@@ -43,6 +43,10 @@ void Arete::setCost(float cost){
     m_cost = cost;
 }
 
+void Arete::display() const{
+    std::cout<< "arete number "<< m_id <<"\narete A : " << m_vertex1 << " to B : " << m_vertex2 << "\ncost : " << m_cost << " and distance : " << m_distance << std::endl;
+}
+
 Arete::~Arete()
 {
 

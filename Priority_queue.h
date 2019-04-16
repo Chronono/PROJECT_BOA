@@ -3,8 +3,9 @@
 
 #include "sommet.h"
 #include "arete.h"
-#include <forward_list>
+#include <list>
 
+void displayList(std::list<Arete*>);
 
 class Priority_queue
 {
@@ -12,11 +13,13 @@ public:
     Priority_queue();
     ~Priority_queue();
 
+    std::list<Arete*> getList();
+
     void add(Sommet*, bool);
     Arete* frontPop();
 
 private:
-    std::forward_list<Arete*> m_areteTri;
+    std::list<Arete*> m_areteTri;
 };
 
 #endif // PRIORITY_QUEUE_H_INCLUDED
