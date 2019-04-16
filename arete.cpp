@@ -26,11 +26,6 @@ std::string Arete::getVertex2() const
     return m_vertex2;
 }
 
-void Arete::data() const
-{
-    std::cout << m_id << " : (sommet 1, sommet 2) = (" << m_vertex1 << ", " << m_vertex2 << ")\n";
-}
-
 float Arete::getDistance() const
 {
     return m_distance;
@@ -46,6 +41,10 @@ void Arete::setDistance(float dist){
 }
 void Arete::setCost(float cost){
     m_cost = cost;
+}
+
+void Arete::display() const{
+    std::cout<< "arete number "<< m_id <<"\n(sommet " << m_vertex1 << " to sommet " << m_vertex2 << ")\ncost : " << m_cost << " and distance : " << m_distance << std::endl;
 }
 
 Arete::~Arete()

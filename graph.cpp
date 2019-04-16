@@ -64,7 +64,7 @@ void graphe::display() const{
     std::cout << "\n Taille : " << getSize() << std::endl;
     for (auto i : m_aretes) {
         std::cout << " Arete ";
-        i.second->data();
+        i.second->display();
     }
 }
 
@@ -79,13 +79,14 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
     Priority_queue listArete;
     std::list<Arete*> primArete;
     std::set<Sommet*> sommetsVisited;
-    Sommet* toVisit;
+    Sommet* toVisit = m_vertices.find("0")->second;
     Arete* areteTmp;
 
     while (sommetsVisited.size() != getOrder())
     {
         listArete.add(toVisit,choice);
         areteTmp = listArete.frontPop();
+
 
         while((sommetsVisited.count(m_vertices.find(areteTmp->getVertex1())->second)==true)&&(sommetsVisited.count(m_vertices.find(areteTmp->getVertex2())->second)==true))
             areteTmp = listArete.frontPop();
@@ -96,8 +97,12 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
             toVisit = m_vertices.find(areteTmp->getVertex1())->second;
 
         sommetsVisited.insert(sommetsVisited.begin(),toVisit);
-        primArete.push_back(areteTmp);
+
+        if (areteTmp!=primArete.front())
+            primArete.push_back(areteTmp);
     }
+
+    return primArete;
 }
 
 int graphe::getOrder() const
