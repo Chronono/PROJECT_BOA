@@ -4,7 +4,7 @@
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
     /// ouverture du fichier
-    std::ifstream fichier("files/" + nom_fichier);
+    std::ifstream fichier(nom_fichier);
 
     if (fichier)
     {
@@ -14,7 +14,7 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
             std::string id;
             int x,y;
             fichier >> id >> x >> y;
-            m_sommets.emplace(id, new Sommet(id,x,y));
+            m_vertices.emplace(id, new Sommet(id,x,y));
         }
 
         int size;
@@ -23,8 +23,8 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
             std::string id, v1, v2;
             fichier >> id >> v1 >> v2;
             m_aretes.emplace(id, new Arete(id,v1,v2));
-            m_sommets.find(v1)->second->ajouterVoisin(m_sommets.find(v2)->second);
-            m_sommets.find(v2)->second->ajouterVoisin(m_sommets.find(v1)->second);
+            m_vertices.find(v1)->second->ajouterVoisin(m_vertices.find(v2)->second, m_aretes.find(id)->second);
+            m_vertices.find(v2)->second->ajouterVoisin(m_vertices.find(v1)->second, m_aretes.find(id)->second);
         }
     }
     else
@@ -36,7 +36,7 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 
 
     /// ouverture du fichier_weight
-    std::ifstream fichier_weight("files/" + nom_fichier_weight);
+    std::ifstream fichier_weight(nom_fichier_weight);
     int size, nbDim;
     fichier_weight >> size >> nbDim;
     for (int i=0; i < size; i++) {

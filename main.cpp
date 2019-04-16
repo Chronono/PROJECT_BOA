@@ -1,9 +1,8 @@
 #include <iostream>
-
-using namespace std;
+#include "graph.h"
 
 int main()
 {
-    cout << "Hello world!" << endl;
-    return 0;
+    graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
+    testCubeTown.display();
 }

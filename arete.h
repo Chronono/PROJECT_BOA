@@ -7,11 +7,13 @@
 class Arete
 {
 public:
-    Arete(std::string id, std::string v1, std::string v2, float distance, float cost);
+    Arete(std::string id, std::string v1, std::string v2);
     std::string getId() const;
     std::vector<std::string> getVertices() const; /// retourne les indices des sommets sous forme de pair
     std::string getVertex1() const;
     std::string getVertex2() const;
+    void setDistance(float);
+    void setCost(float);
     float getDistance() const;
     float getCost() const;
     ~Arete();

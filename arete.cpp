@@ -1,7 +1,7 @@
 #include "arete.h"
 
-Arete::Arete(std::string id, std::string v1, std::string v2, float distance, float cost):
-    m_vertex1(v1), m_vertex2(v2), m_distance(distance), m_cost(cost)
+Arete::Arete(std::string id, std::string v1, std::string v2):
+    m_id(id), m_vertex1(v1), m_vertex2(v2)
 {
 
 }
@@ -34,6 +34,13 @@ float Arete::getDistance() const
 float Arete::getCost() const
 {
     return m_cost;
+}
+
+void Arete::setDistance(float dist){
+    m_distance = dist;
+}
+void Arete::setCost(float cost){
+    m_cost = cost;
 }
 
 Arete::~Arete()
