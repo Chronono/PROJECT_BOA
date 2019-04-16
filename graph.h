@@ -21,7 +21,8 @@ class graphe
 
         std::list<Arete*> parcoursPrim(bool);
 
-        int getOrdre() const;
+        int getOrder() const;
+        int getSize() const;
 
         int isEulerien() const;
 

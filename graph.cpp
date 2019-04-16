@@ -52,11 +52,19 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 }
 
 void graphe::display() const{
-    std::cout<<"graphe : "<<std::endl;
-    std::cout<<" Ordre : " << getOrdre() <<std::endl;
+    std::cout<<"graphe :\n"<<std::endl;
+
+    std::cout<<" Ordre : " << getOrder() <<std::endl;
     for (auto i : m_vertices){
-        std::cout<<" Sommet : "<< i.second->getId() << std::endl;
+        std::cout<<" Sommet ";
+        i.second->afficherData();
         i.second->afficherVoisins();
+    }
+
+    std::cout << "\n Taille : " << getSize() << std::endl;
+    for (auto i : m_aretes) {
+        std::cout << " Arete ";
+        i.second->display();
     }
 }
 
@@ -67,7 +75,7 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
     Sommet* toVisit = m_vertices.find("0")->second;
     Arete* areteTmp;
 
-    while (sommetsVisited.size() != getOrdre())
+    while (sommetsVisited.size() != getOrder())
     {
         listArete.add(toVisit,choice);
         areteTmp = listArete.frontPop();
@@ -90,9 +98,16 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
     return primArete;
 }
 
-int graphe::getOrdre() const{
+int graphe::getOrder() const
+{
     return m_vertices.size();
 }
+
+int graphe::getSize() const
+{
+    return m_aretes.size();
+}
+
 int graphe::isEulerien() const{
     int compt=0;
     for (auto i : m_vertices)
