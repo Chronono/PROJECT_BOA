@@ -1,0 +1,48 @@
+# depslib dependency file v1.0
+1514144174 source:c:\users\matthieu\desktop\porjet velo\projet boa\main.cpp
+	<iostream>
+
+1555406261 source:c:\users\matthieu\desktop\porjet velo\projet boa\sommet.cpp
+	<iostream>
+	<queue>
+	<stack>
+	<unordered_map>
+	<unordered_set>
+	"sommet.h"
+
+1555406261 c:\users\matthieu\desktop\porjet velo\projet boa\sommet.h
+	<string>
+	<vector>
+	<unordered_map>
+	<unordered_set>
+	<set>
+	<queue>
+	"arete.h"
+
+1555349651 source:c:\users\matthieu\desktop\porjet velo\projet boa\graph.cpp
+	"graph.h"
+
+1555348272 c:\users\matthieu\desktop\porjet velo\projet boa\graph.h
+	<fstream>
+	<iostream>
+	<string>
+	<unordered_map>
+	"sommet.h"
+	<list>
+	"arete.h"
+
+1555406285 source:c:\users\matthieu\desktop\porjet velo\projet boa\arete.cpp
+	"arete.h"
+
+1555406305 c:\users\matthieu\desktop\porjet velo\projet boa\arete.h
+	<vector>
+	<string>
+
+1555370468 source:c:\users\matthieu\desktop\porjet velo\projet boa\priority_queue.cpp
+	"Priority_queue.h"
+
+1555369677 c:\users\matthieu\desktop\porjet velo\projet boa\priority_queue.h
+	"sommet.h"
+	"arete.h"
+	<forward_list>
+
