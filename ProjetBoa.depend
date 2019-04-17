@@ -46,7 +46,7 @@
 	"arete.h"
 	<forward_list>
 
-1555444027 source:c:\users\matthieu\desktop\projet boa\arete.cpp
+1555444174 source:c:\users\matthieu\desktop\projet boa\arete.cpp
 	"arete.h"
 
 1555444027 c:\users\matthieu\desktop\projet boa\arete.h
@@ -55,10 +55,11 @@
 	<string>
 	<iostream>
 
-1555444149 source:c:\users\matthieu\desktop\projet boa\graph.cpp
+1555458812 source:c:\users\matthieu\desktop\projet boa\graph.cpp
 	"graph.h"
+	<math.h>
 
-1555444139 c:\users\matthieu\desktop\projet boa\graph.h
+1555456172 c:\users\matthieu\desktop\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -68,6 +69,7 @@
 	<set>
 	"arete.h"
 	"Priority_queue.h"
+	<map>
 
 1555424499 c:\users\matthieu\desktop\projet boa\sommet.h
 	<string>
@@ -94,9 +96,10 @@
 	<unordered_set>
 	"sommet.h"
 
-1555443664 source:c:\users\matthieu\desktop\projet boa\main.cpp
+1555458986 source:c:\users\matthieu\desktop\projet boa\main.cpp
 	<iostream>
 	"graph.h"
+	<math.h>
 
 1555432495 source:c:\users\bastien\projet piscine\projet boa\arete.cpp
 	"arete.h"
