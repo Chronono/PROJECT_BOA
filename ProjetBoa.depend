@@ -55,15 +55,17 @@
 	<string>
 	<iostream>
 
-1555458812 source:c:\users\matthieu\desktop\projet boa\graph.cpp
+1555508804 source:c:\users\matthieu\desktop\projet boa\graph.cpp
+	<math.h>
 	"graph.h"
 	<math.h>
 
-1555456172 c:\users\matthieu\desktop\projet boa\graph.h
+1555508406 c:\users\matthieu\desktop\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
 	<unordered_map>
+	<unordered_set>
 	"sommet.h"
 	<list>
 	<set>
@@ -96,7 +98,7 @@
 	<unordered_set>
 	"sommet.h"
 
-1555458986 source:c:\users\matthieu\desktop\projet boa\main.cpp
+1555508791 source:c:\users\matthieu\desktop\projet boa\main.cpp
 	<iostream>
 	"graph.h"
 	<math.h>
@@ -153,5 +155,17 @@
 	<stack>
 	<unordered_map>
 	<unordered_set>
+	"sommet.h"
+
+1555501320 source:c:\users\matthieu\desktop\projet boa\subgraph.cpp
+	"subGraph.h"
+	"graph.h"
+
+1555501320 c:\users\matthieu\desktop\projet boa\subgraph.h
+	<set>
+	<list>
+	<unordered_map>
+	<string>
+	"arete.h"
 	"sommet.h"
 

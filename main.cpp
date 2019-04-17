@@ -1,27 +1,27 @@
 #include <iostream>
 #include "graph.h"
-<<<<<<< HEAD
 #include <math.h>
 
-int main()
+int nbSolutions(int bits)
 {
-    graphe testCubeTown("broadway.txt","broadway_weights_0.txt");
-    testCubeTown.display();
-=======
-
+    if (bits-1 > 0)
+        return nbSolutions(bits-1) + pow(2,bits-1);
+    else
+        return 1;
+}
 
 int main()
 {
     graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
->>>>>>> 2b895b302afa507d21b2a64b20ab12605385ff2e
-
+/*
     std::cout << "\n\nPrim : \n     En fonction de la distance" << std::endl;
     displayList(testCubeTown.parcoursPrim(false));
     std::cout << "\n\n      En fonction du cout" << std::endl;
     displayList(testCubeTown.parcoursPrim(true));
-<<<<<<< HEAD
+    */
 
-    testCubeTown.getEverySubGraph();
-=======
->>>>>>> 2b895b302afa507d21b2a64b20ab12605385ff2e
+    std::cout << "nb sol 4 : " << nbSolutions(4);
+
+
+
 }

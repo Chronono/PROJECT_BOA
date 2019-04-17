@@ -143,9 +143,17 @@ std::string graphe::toBinary(int n)
     return r;
 }
 
+int nbSolutionsBin(int bits)
+{
+    if (bits-1 > 1)
+        return nbSolutionsBin(bits-1) + pow(2,bits-1);
+    else
+        return 1;
+}
+
 std::vector<std::string> graphe::gen_pareto_solution()
 {
-    int nbSolutions = (int)pow(2, getSize());
+    int nbSolutions = nbSolutionsBin(getSize());
     std::vector<std::string> solutions;
     for (int i=0; i < nbSolutions; i++)
         solutions.push_back(toBinary(i));
