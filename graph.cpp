@@ -172,7 +172,9 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
         if (nbArete == m_vertices.size() - 1) {
             /// si le nombre de sommets conectés est égal au nombre de sommets en tout, le graphe n'est pas eulérien
             std::unordered_set<std::string> visited;
-            for (unsigned int i=0; i < code.size(); i++) {
+            for (unsigned int i=0; i < code.size(); i++)
+            //for (int i = code.size() - 1; i >= 0; --i)
+            {
                 if (code[i] == '1') {
                     char ind[m_aretes.size()];
                     sprintf(ind,"%d",i);
@@ -189,10 +191,9 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
                 std::cout << code;
                 int poid1=0;
                 int poid2=0;
-                for (int i = 0; i < code.size();i++)
-                {
+                for (int i = 0; i < code.size();i++) {
                     char ind[m_aretes.size()];
-                    sprintf(ind, "%d", i);
+                    sprintf(ind, "%d", (code.size() -1) - i);
                     std::cout << "  ind : " << ind;
                     if (code[i] == '1'){
                     poid1 += m_aretes.find(ind)->second->getDistance();
