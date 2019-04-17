@@ -101,22 +101,25 @@
 	"graph.h"
 	<math.h>
 
-1555432495 source:c:\users\bastien\projet piscine\projet boa\arete.cpp
+1555453541 source:c:\users\bastien\projet piscine\projet boa\arete.cpp
 	"arete.h"
 
-1555432515 c:\users\bastien\projet piscine\projet boa\arete.h
+1555453541 c:\users\bastien\projet piscine\projet boa\arete.h
 	<iostream>
 	<vector>
 	<string>
+	<iostream>
 
-1555432563 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
+1555455560 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
+	<math.h>
 	"graph.h"
 
-1555432467 c:\users\bastien\projet piscine\projet boa\graph.h
+1555455913 c:\users\bastien\projet piscine\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
 	<unordered_map>
+	<unordered_set>
 	"sommet.h"
 	<list>
 	<set>
@@ -132,19 +135,19 @@
 	<queue>
 	"arete.h"
 
-1555430952 c:\users\bastien\projet piscine\projet boa\priority_queue.h
+1555453541 c:\users\bastien\projet piscine\projet boa\priority_queue.h
 	"sommet.h"
 	"arete.h"
-	<forward_list>
+	<list>
 
-1555430952 source:c:\users\bastien\projet piscine\projet boa\main.cpp
+1555455854 source:c:\users\bastien\projet piscine\projet boa\main.cpp
 	<iostream>
 	"graph.h"
 
-1555430952 source:c:\users\bastien\projet piscine\projet boa\priority_queue.cpp
+1555453541 source:c:\users\bastien\projet piscine\projet boa\priority_queue.cpp
 	"Priority_queue.h"
 
-1555432039 source:c:\users\bastien\projet piscine\projet boa\sommet.cpp
+1555453541 source:c:\users\bastien\projet piscine\projet boa\sommet.cpp
 	<iostream>
 	<queue>
 	<stack>
