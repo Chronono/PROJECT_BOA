@@ -146,7 +146,7 @@ std::string graphe::toBinary(int n)
 
 std::vector<std::string> graphe::gen_binSolution()
 {
-    int nbSolutions = (int)pow(2, getSize());
+    int nbSolutions = pow(2,getSize());
     std::vector<std::string> solutions;
     for (int i=0; i < nbSolutions; i++)
         solutions.push_back(toBinary(i));
@@ -186,7 +186,20 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
             }
             if (visited.size() == m_vertices.size()) {
                 paretoSolutions.push_back(code);
-                std::cout << code << std::endl;
+                std::cout << code;
+                int poid1=0;
+                int poid2=0;
+                for (int i = 0; i < code.size();i++)
+                {
+                    char ind[m_aretes.size()];
+                    sprintf(ind, "%d", i);
+                    std::cout << "  ind : " << ind;
+                    if (code[i] == '1'){
+                    poid1 += m_aretes.find(ind)->second->getDistance();
+                    poid2 += m_aretes.find(ind)->second->getCost();
+                    }
+                }
+                std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;
             }
         }
     }
