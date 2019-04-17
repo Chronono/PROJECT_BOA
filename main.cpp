@@ -1,9 +1,13 @@
 #include <iostream>
 #include "graph.h"
+<<<<<<< HEAD
 #include <math.h>
+=======
+>>>>>>> c871c7b9f70dc1798f64d6e60800bada012ec4cc
 
 int nbSolutions(int bits)
 {
+<<<<<<< HEAD
     if (bits-1 > 0)
         return nbSolutions(bits-1) + pow(2,bits-1);
     else
@@ -24,4 +28,9 @@ int main()
 
 
 
+=======
+    graphe testCubeTown("broadway.txt","broadway_weights_0.txt");
+
+    return 0;
+>>>>>>> c871c7b9f70dc1798f64d6e60800bada012ec4cc
 }
