@@ -10,6 +10,7 @@
 #include <set>
 #include "arete.h"
 #include "Priority_queue.h"
+#include <map>
 
 class graphe
 {

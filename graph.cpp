@@ -1,5 +1,6 @@
 #include <math.h>
 #include "graph.h"
+#include <math.h>
 
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
