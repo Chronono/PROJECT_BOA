@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1555499744 source:c:\users\alex\desktop\testallle\tetstete\main.cpp
+	<iostream>
+	<allegro.h>
+	"utilalleg.h"
+	"boutton.h"
+	<string>
+	<fstream>
+	<vector>
+
+1555428648 c:\users\alex\desktop\testallle\tetstete\utilalleg.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<allegro.h>
+
+1555424995 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
+	"utilalleg.h"
+
+1555430708 source:c:\users\alex\desktop\testallle\tetstete\boutton.cpp
+	<iostream>
+	"boutton.h"
+
+1555430699 c:\users\alex\desktop\testallle\tetstete\boutton.h
+	<string>
+
