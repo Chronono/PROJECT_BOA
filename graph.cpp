@@ -51,7 +51,8 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
     fichier_weight.close();
 
     /// génération de tous les schémasa possibles du graphe
-    std::vector<std::string> test = gen_pareto_solution();
+    std::vector<std::string> test = gen_binSolution();
+    std::vector<std::string> solutionsdepareto = pareto(test);
 }
 
 void graphe::display() const{
@@ -78,7 +79,7 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
     Sommet* toVisit = m_vertices.find("0")->second;
     Arete* areteTmp;
 
-    while (sommetsVisited.size() != getOrder())
+    while ((int)sommetsVisited.size() != (int)getOrder())
     {
         listArete.add(toVisit,choice);
         areteTmp = listArete.frontPop();
@@ -111,9 +112,9 @@ int graphe::getSize() const
     return m_aretes.size();
 }
 
-int graphe::isEulerien() const{
+int graphe::isEulerien(std::unordered_map<std::string,Sommet*> vertices) const{
     int compt=0;
-    for (auto i : m_vertices)
+    for (auto i : vertices)
         if ((i.second)->getDeg()%2 == 1)
             compt++;
     if (compt == 0)
@@ -129,12 +130,12 @@ std::string graphe::toBinary(int n)
     std::cout << n << " convert to ";
     std::string r;
     /// j'ai ajouter la condition r.size() < 8 afin de limiter la taille de la chaine renvoyée, j'ai choisit 8 car un octet correspond à 8 bits
-    while (n!=0 && r.size() < 8) {
+    while (n!=0 && r.size() < m_aretes.size()) {
         r = (n%2 == 0 ? "0":"1") + r;
         n/=2;
     }
     /// cette boucle sert à compléter la chaine afin de toujours renvoyer un résultat homogène
-    while (r.size() < 8) {
+    while (r.size() < m_aretes.size()) {
         r = "0" + r;
     }
     std::cout << r << std::endl;
@@ -142,7 +143,7 @@ std::string graphe::toBinary(int n)
     return r;
 }
 
-std::vector<std::string> graphe::gen_pareto_solution()
+std::vector<std::string> graphe::gen_binSolution()
 {
     int nbSolutions = (int)pow(2, getSize());
     std::vector<std::string> solutions;
@@ -150,6 +151,45 @@ std::vector<std::string> graphe::gen_pareto_solution()
         solutions.push_back(toBinary(i));
 
     return solutions;
+}
+
+std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
+{
+    std::cout << "Solutions de pareto :" << std::endl;
+    std::vector<std::string> paretoSolutions;
+
+    /// pour chaque schéma :
+    for (std::string code : combinaisons) {
+
+        /// calcul du nombre d'arêtes dans le schéma
+        unsigned int nbArete(0);
+        for (unsigned int i=0; i < code.size(); i++)
+            if (code[i] == '1')
+                nbArete++;
+
+        /// si le schéma étudier à "nbSommets-1" arêtes, alors on peux poursuivre les calculs
+        if (nbArete == m_vertices.size() - 1) {
+            /// si le nombre de sommets conectés est égal au nombre de sommets en tout, le graphe n'est pas eulérien
+            std::unordered_set<std::string> visited;
+            for (unsigned int i=0; i < code.size(); i++) {
+                if (code[i] == '1') {
+                    char ind[m_aretes.size()];
+                    sprintf(ind,"%d",i);
+                    std::string v1 = m_aretes.find(ind)->second->getVertex1();
+                    std::string v2 = m_aretes.find(ind)->second->getVertex2();
+                    if (!visited.count(v1))
+                        visited.emplace(v1);
+                    if (!visited.count(v2))
+                        visited.emplace(v2);
+                }
+            }
+            if (visited.size() == m_vertices.size()) {
+                paretoSolutions.push_back(code);
+                std::cout << code << std::endl;
+            }
+        }
+    }
+    return paretoSolutions;
 }
 
 graphe::~graphe()

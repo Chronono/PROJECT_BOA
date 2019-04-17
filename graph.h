@@ -22,14 +22,15 @@ class graphe
         std::list<Arete*> parcoursPrim(bool);
         int getOrder() const;
         int getSize() const;
-        int isEulerien() const;
+        int isEulerien(std::unordered_map<std::string,Sommet*> vertices) const;
 
     protected:
 
     private:
         /// functions
         std::string toBinary(int n);
-        std::vector<std::string> gen_pareto_solution();
+        std::vector<std::string> gen_binSolution();
+        std::vector<std::string> pareto(std::vector<std::string>& combinaisons);
 
         /// attributes
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)

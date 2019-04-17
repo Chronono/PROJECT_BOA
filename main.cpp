@@ -4,10 +4,11 @@
 
 int main()
 {
-    graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
-
+    graphe testCubeTown("broadway.txt","broadway_weights_0.txt");
+    /*
     std::cout << "\n\nPrim : \n     En fonction de la distance" << std::endl;
     displayList(testCubeTown.parcoursPrim(false));
     std::cout << "\n\n      En fonction du cout" << std::endl;
     displayList(testCubeTown.parcoursPrim(true));
+    */
 }
