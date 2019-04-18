@@ -322,6 +322,13 @@ void AfficherGraphe(std::string choix)
             }
 }
 
+void AfficherGraphique(){
+    clear_to_color(screen,makecol(255,255,255));
+    line(screen, 150, 50, 150, 550, makecol(0,0,0));
+    line(screen, 150, 550, 650, 550, makecol(0,0,0));
+    triangle(screen,150, 25, 140, 50, 160, 50,makecol(0,0,0));
+}
+
 
 void initialisation()
 {
@@ -352,6 +359,8 @@ void initialisation()
             choix = menuCharger();
             AfficherGraphe(choix);
             break;
+        case parcours:
+            AfficherGraphique();
         }
         rest(64);
     }

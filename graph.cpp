@@ -8,7 +8,6 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
     /// ouverture du fichier
     std::ifstream fichier("files/" + nom_fichier);
-
     if (fichier)
     {
         int order;
@@ -19,7 +18,6 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
             fichier >> id >> x >> y;
             m_vertices.emplace(id, new Sommet(id,x,y));
         }
-
         int size;
         fichier >> size;
         for (int i=0; i < size; i++) {
