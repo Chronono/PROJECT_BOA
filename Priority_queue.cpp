@@ -40,7 +40,6 @@ bool compare_areteConst(const Arete* first, const Arete* second)
 
 void Priority_queue::add(Sommet *som, bool choice) /// si choice = false alors priority queue en fct de distance sinon fct de cost
 {
-    int compt=0;
     for (auto it : som->getAretesAdjacents())
     {
         m_areteTri.push_back(it);

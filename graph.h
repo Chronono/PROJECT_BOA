@@ -21,6 +21,8 @@ class graphe
         ~graphe();
         void display() const;
         std::list<Arete*> parcoursPrim(bool);
+        std::pair<float,float> getPoidsSolPareto(std::string);
+        std::vector<std::string> getFrontiereSolPareto();
         int getOrder() const;
         int getSize() const;
         int isEulerien(std::unordered_map<std::string,Sommet*> vertices) const;
@@ -34,6 +36,7 @@ class graphe
         std::vector<std::string> pareto(std::vector<std::string>& combinaisons);
 
         /// attributes
+        std::vector<std::string> m_solutionsdepareto;
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
         std::unordered_map<std::string,Arete*> m_aretes;
 };

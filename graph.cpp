@@ -53,7 +53,7 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 
     /// génération de tous les schémasa possibles du graphe
     std::vector<std::string> test = gen_binSolution();
-    std::vector<std::string> solutionsdepareto = pareto(test);
+    m_solutionsdepareto = pareto(test);
 }
 
 void graphe::display() const{
@@ -154,6 +154,91 @@ std::vector<std::string> graphe::gen_binSolution()
     return solutions;
 }
 
+std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
+    std::pair<float,float> poids; /// first -> distance, second -> cout
+    for (int i = 0; i < code_bin.size(); i++)
+    {
+        char ind[m_aretes.size()];
+        sprintf(ind, "%d", (code_bin.size() -1) - i);
+        if (code_bin[i] == '1')
+        {
+            poids.first += m_aretes.find(ind)->second->getDistance();
+            poids.second += m_aretes.find(ind)->second->getCost();
+        }
+    }
+
+    return poids;
+}
+
+std::vector<std::string> graphe::getFrontiereSolPareto()
+{
+    std::vector<std::string> tabParetoDomine;
+    std::vector<std::string> tabParetoDominant;
+
+    for (auto i : m_solutionsdepareto)
+    {
+        std::cout << "Debug #1 -> boucle sol Pareto\n";
+        if (tabParetoDominant.empty()==true){
+            tabParetoDominant.push_back(i);
+            std::cout << "Debug #2 -> pas de dominant, on ajoute le refentiel dominant\n";
+        }
+        else
+        {
+            std::pair<float,float> poidTest = getPoidsSolPareto(i);
+            //for (auto j : tabParetoDominant)
+            size_t sizeDominantInstantT = tabParetoDominant.size();
+            bool placed = false;
+            while (placed == false){
+            for (int j = 0; j < sizeDominantInstantT; j++)
+            {
+                std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
+                std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
+                std::cout << "Debug #4 -> boucle dominante + poidSolPareto : (" << poidTest.first << "," << poidTest.second << "), poid du dominant : (" << poidDominant.first << "," << poidDominant.second << ")" << std::endl;
+                if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
+                    std::cout << "Debug #5 -> solution domine\n";
+                    tabParetoDomine.push_back(i);
+                    placed = true;
+                    break;
+                    }
+                else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
+                {
+                    std::cout << "Debug #5_1 -> solution dominante\n";
+                    tabParetoDominant.push_back(i);
+                    tabParetoDomine.push_back(tabParetoDominant[j]);
+                    tabParetoDominant.erase(tabParetoDominant.begin() + j);
+                    std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
+                    placed=true;
+                }
+                else if (j == sizeDominantInstantT-1){
+                    std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
+                    tabParetoDominant.push_back(i);
+                    placed = true;
+                }
+                    /*
+                else if (j == tabParetoDominant[tabParetoDominant.size()])
+                {
+                    tabParetoDominant.push_back(j);
+                    for (int k = 0; k < tabParetoDominant.size(); k++)
+                    {
+                        if (tabParetoDominant[k] != j){
+                            std::pair<float,float> poidDominantTest = getPoidsSolPareto(tabParetoDominant[k]);
+                            if (poidDominant.first < poidDominantTest.first && poidDominant.second < poidDominantTest.second)
+                            {
+                                tabParetoDomine.push_back(tabParetoDominant[k]);
+                                tabParetoDominant.erase(tabParetoDominant.begin() + k);
+                            }
+                        }
+                    }
+                }*/
+            }
+            }
+        }
+    }
+
+    for (auto i : tabParetoDominant)
+        std::cout << "pareto dominant : " << i << std::endl;
+}
+
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
 {
     std::cout << "Solutions de pareto :" << std::endl;
@@ -189,18 +274,8 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
             if (visited.size() == m_vertices.size()) {
                 paretoSolutions.push_back(code);
                 std::cout << code;
-                int poid1=0;
-                int poid2=0;
-                for (int i = 0; i < code.size();i++) {
-                    char ind[m_aretes.size()];
-                    sprintf(ind, "%d", (code.size() -1) - i);
-                    std::cout << "  ind : " << ind;
-                    if (code[i] == '1'){
-                    poid1 += m_aretes.find(ind)->second->getDistance();
-                    poid2 += m_aretes.find(ind)->second->getCost();
-                    }
-                }
-                std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;
+                std::pair<float,float> poids = getPoidsSolPareto(code);
+                std::cout << " --> (D:" << poids.first << ",P:" << poids.second << ")"<< std::endl;
             }
         }
     }
