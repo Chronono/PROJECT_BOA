@@ -7,11 +7,8 @@
 #define HEIGHT 600
 #define WIDTH 800
 
-
-
 typedef enum {menuLoop,chargerVille,parcours,leaveLoop} status;
-status optionMenu = menuLoop;
-BITMAP *buffer;
+void initialisation();
 
 
 #endif // UTILALLEG_H_INCLUDED

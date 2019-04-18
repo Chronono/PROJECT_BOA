@@ -1,0 +1,90 @@
+# depslib dependency file v1.0
+1555509672 source:c:\users\alex\desktop\testallle\tetstete\main.cpp
+	<iostream>
+	<allegro.h>
+	"utilalleg.h"
+	"boutton.h"
+	"graph.h"
+	<string>
+	<fstream>
+	<vector>
+	<math.h>
+
+1555588744 c:\users\alex\desktop\testallle\tetstete\utilalleg.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<allegro.h>
+
+1555588168 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
+	<iostream>
+	<allegro.h>
+	"utilalleg.h"
+	"boutton.h"
+	<string>
+	<fstream>
+	<vector>
+	<math.h>
+	"graph.h"
+
+1555430708 source:c:\users\alex\desktop\testallle\tetstete\boutton.cpp
+	<iostream>
+	"boutton.h"
+
+1555430699 c:\users\alex\desktop\testallle\tetstete\boutton.h
+	<string>
+
+1555501901 source:c:\users\alex\desktop\testallle\tetstete\arete.cpp
+	"arete.h"
+
+1555501901 c:\users\alex\desktop\testallle\tetstete\arete.h
+	<iostream>
+	<vector>
+	<string>
+	<iostream>
+
+1555501901 source:c:\users\alex\desktop\testallle\tetstete\priority_queue.cpp
+	"Priority_queue.h"
+
+1555501901 c:\users\alex\desktop\testallle\tetstete\priority_queue.h
+	"sommet.h"
+	"arete.h"
+	<list>
+
+1555508341 c:\users\alex\desktop\testallle\tetstete\sommet.h
+	<string>
+	<vector>
+	<unordered_map>
+	<unordered_set>
+	<set>
+	<queue>
+	"arete.h"
+
+1555585189 c:\users\alex\desktop\testallle\tetstete\graph.h
+	<fstream>
+	<iostream>
+	<string>
+	<unordered_map>
+	<unordered_set>
+	"sommet.h"
+	<list>
+	<set>
+	"arete.h"
+	"Priority_queue.h"
+	<map>
+
+1555508511 source:c:\users\alex\desktop\testallle\tetstete\sommet.cpp
+	<iostream>
+	<queue>
+	<stack>
+	<unordered_map>
+	<unordered_set>
+	"sommet.h"
+
+1555585300 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
+	<math.h>
+	"graph.h"
+	<math.h>
+	"utilalleg.h"
+	<allegro.h>
+
