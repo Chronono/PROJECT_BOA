@@ -22,7 +22,7 @@ class graphe
         void display() const;
         std::list<Arete*> parcoursPrim(bool);
         std::pair<float,float> getPoidsSolPareto(std::string);
-        std::vector<std::string> getFrontiereSolPareto();
+        std::vector<std::string> getFrontiereSolPareto(bool);
         int getOrder() const;
         int getSize() const;
         int isEulerien() const;

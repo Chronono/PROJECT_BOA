@@ -312,7 +312,7 @@ std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     return poids;
 }
 
-std::vector<std::string> graphe::getFrontiereSolPareto()
+std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false return dominé true dominant
 {
     std::vector<std::string> tabParetoDomine;
     std::vector<std::string> tabParetoDominant;
@@ -379,6 +379,10 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
 
     for (auto i : tabParetoDominant)
         std::cout << "pareto dominant : " << i << std::endl;
+    if (choice==true)
+        return tabParetoDominant;
+    else
+        return tabParetoDomine;
 }
 
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
