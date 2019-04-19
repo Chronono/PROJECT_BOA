@@ -2,6 +2,7 @@
 #include "graph.h"
 #include <math.h>
 #include "utilalleg.h"
+#include "arete.h"
 #include <allegro.h>
 
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
@@ -456,7 +457,7 @@ std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     return poids;
 }
 
-std::vector<std::string> graphe::getFrontiereSolPareto()
+std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false return dominé true dominant
 {
     std::vector<std::string> tabParetoDomine;
     std::vector<std::string> tabParetoDominant;
@@ -471,7 +472,7 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
         else
         {
             std::pair<float,float> poidTest = getPoidsSolPareto(i);
-            //for (auto j : tabParetoDominant)
+            for (auto j : tabParetoDominant)
             size_t sizeDominantInstantT = tabParetoDominant.size();
             bool placed = false;
             while (placed == false){
@@ -523,7 +524,10 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
 
     for (auto i : tabParetoDominant)
         std::cout << "pareto dominant : " << i << std::endl;
-    return {"nothing", "something"};
+    if (choice==true)
+        return tabParetoDominant;
+    else
+        return tabParetoDomine;
 }
 
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)

@@ -7,7 +7,7 @@
 #define HEIGHT 600
 #define WIDTH 800
 
-typedef enum {menuLoop,chargerVille,parcours,leaveLoop} status;
+typedef enum {menuLoop,chargerVille,leaveLoop} status;
 void initialisation();
 
 

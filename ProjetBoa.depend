@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1555588993 source:c:\users\alex\desktop\testallle\tetstete\main.cpp
+1555669961 source:c:\users\alex\desktop\testallle\tetstete\main.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"
@@ -10,13 +10,13 @@
 	<vector>
 	<math.h>
 
-1555588744 c:\users\alex\desktop\testallle\tetstete\utilalleg.h
+1555669135 c:\users\alex\desktop\testallle\tetstete\utilalleg.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<allegro.h>
 
-1555588432 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
+1555669714 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"
@@ -34,10 +34,10 @@
 1555430699 c:\users\alex\desktop\testallle\tetstete\boutton.h
 	<string>
 
-1555501901 source:c:\users\alex\desktop\testallle\tetstete\arete.cpp
+1555669898 source:c:\users\alex\desktop\testallle\tetstete\arete.cpp
 	"arete.h"
 
-1555501901 c:\users\alex\desktop\testallle\tetstete\arete.h
+1555669898 c:\users\alex\desktop\testallle\tetstete\arete.h
 	<iostream>
 	<vector>
 	<string>
@@ -45,7 +45,7 @@
 
 1555585404 D
 
-1555588832 source:c:\users\alex\desktop\testallle\tetstete\priority_queue.cpp
+1555669898 source:c:\users\alex\desktop\testallle\tetstete\priority_queue.cpp
 	"Priority_queue.h"
 
 1555501901 c:\users\alex\desktop\testallle\tetstete\priority_queue.h
@@ -84,7 +84,7 @@
 	<unordered_set>
 	"sommet.h"
 
-1555508341 c:\users\alex\desktop\testallle\tetstete\sommet.h
+1555669898 c:\users\alex\desktop\testallle\tetstete\sommet.h
 	<string>
 	<vector>
 	<unordered_map>
@@ -93,7 +93,7 @@
 	<queue>
 	"arete.h"
 
-1555588993 c:\users\alex\desktop\testallle\tetstete\graph.h
+1555669898 c:\users\alex\desktop\testallle\tetstete\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -142,7 +142,7 @@
 	"utilalleg.h"
 	<allegro.h>
 
-1555669389 c:\users\bastien\projet piscine\projet boa\graph.h
+1555675113 c:\users\bastien\projet piscine\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -157,7 +157,13 @@
 
 1555606190 queue.h"
 
-1555508511 source:c:\users\alex\desktop\testallle\tetstete\sommet.cpp
+1555669898 source:c:\users\alex\desktop\testallle\tetstete\sommet.cpp
+	<iostream>
+	<queue>
+	<stack>
+	<unordered_map>
+	<unordered_set>
+	"sommet.h"
 
 1555585300 aacb2dff42e275e57d06f34bc807c4b31f127
 
@@ -175,7 +181,7 @@
 	"arete.h"
 	<list>
 
-1555665967 source:c:\users\bastien\projet piscine\projet boa\main.cpp
+1555675113 source:c:\users\bastien\projet piscine\projet boa\main.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"
@@ -199,11 +205,12 @@
 
 1555663145 
 
-1555592860 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
+1555670122 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
 	<math.h>
 	"graph.h"
 	<math.h>
 	"utilalleg.h"
+	"arete.h"
 	<allegro.h>
 
 1555585300 >
@@ -227,13 +234,13 @@
 1555663935 c:\users\bastien\projet piscine\projet boa\boutton.h
 	<string>
 
-1555663935 c:\users\bastien\projet piscine\projet boa\utilalleg.h
+1555675113 c:\users\bastien\projet piscine\projet boa\utilalleg.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<allegro.h>
 
-1555671951 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
+1555675113 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"

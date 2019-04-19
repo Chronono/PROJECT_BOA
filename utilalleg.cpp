@@ -103,11 +103,12 @@ void menu(status* optionMenu)          /// Permet d'accéder aux différents choix
     {
         if (mouse_x>=285 && mouse_x<=500 && mouse_y >=165 && mouse_y <= 195)    // ici on appuye sur play
             *optionMenu = chargerVille;
-        if(mouse_x>=285 && mouse_x<=435 && mouse_y >=245 && mouse_y <= 270)     // on appuye sur quitter
-            *optionMenu = parcours;
-        if(mouse_x>=285 && mouse_x<=415 && mouse_y >=325 && mouse_y <= 350)    // on appuye sur option
+        if(mouse_x>=285 && mouse_x<=415 && mouse_y >=245 && mouse_y <= 270)     // on appuye sur quitter
             *optionMenu = leaveLoop;
+<<<<<<< HEAD
         //printf("%d", optionMenu);
+=======
+>>>>>>> 8f28d529f39465cab0850d5dd460598d7d90b483
     }
 }
 
@@ -137,6 +138,7 @@ void afficherBase(BITMAP* Villes,FONT* font1,int* k, int* x, int* y){
                     textprintf_ex(screen,font1,350,510,makecol(255,255,255),-1,"Voir Plus");
                     textprintf_ex(screen,font1,15,150,makecol(0,0,0),-1,"Ajouter");
                     textprintf_ex(screen,font1,15,230,makecol(0,0,0),-1,"Supprimer");
+                    textprintf_ex(screen,font1,15,300,makecol(0,0,0),-1,"Retour");
                     *k=0;
                     *x = 350;
                     *y = 150;
@@ -187,8 +189,10 @@ std::string menuCharger()
                 page.push_back(but);
                 but.modifyboutton(15,230,"Supprimer");
                 page.push_back(but);
+                but.modifyboutton(15,300,"Retour");
+                page.push_back(but);
                 choix = chooseVille(page);
-                if (choix != "Voir Plus" && choix != "Supprimer" && choix != "Ajouter")
+                if (choix != "Voir Plus" && choix != "Supprimer" && choix != "Ajouter" && choix != "Retour")
                 {
                     if(supprimer == 1)
                     {
@@ -235,6 +239,7 @@ std::string menuCharger()
                     initFichier(fichier,&ligne);
                     afficherBase(Villes,font1,&k,&x,&y);
                 }
+                else if(choix == "Retour")  condition = 1;
                 else
                 {
                     page.clear();
@@ -261,13 +266,39 @@ void AfficherDistCost(graphe g,FONT* font1,bool prim1, bool prim2)
         c1 = makecol(0,255,0);
         c2=c1;
     }
-    textprintf_ex(screen,font1,520,50,c1,-1,"Distance");
-    textprintf_ex(screen,font1,520,100,c2,-1,"Cost");
-    textprintf_ex(screen,font1,520,150,makecol(0,0,0),-1,"Menu");
+    textprintf_ex(screen,font1,520,50,c1,-1,"Cout 1");
+    textprintf_ex(screen,font1,520,100,c2,-1,"Cout 2");
+    textprintf_ex(screen,font1,520,150,makecol(0,0,0),-1,"Pareto");
+    textprintf_ex(screen,font1,520,200,makecol(0,0,0),-1,"Retour");
 }
+
+void AfficherGraphique(){
+    clear_to_color(screen,makecol(255,255,255));
+    line(screen, 150, 50, 150, 550, makecol(0,0,0));
+    line(screen, 150, 550, 650, 550, makecol(0,0,0));
+    textprintf_ex(screen,font,60,40,makecol(0,0,0),-1,"Cout 1");
+    textprintf_ex(screen,font,650,570,makecol(0,0,0),-1,"Cout 2");
+    triangle(screen,150, 25,140, 50,160, 50,makecol(0,0,0));
+    triangle(screen,650,560,650,540,675,550,makecol(0,0,0));
+}
+
+
+void PaPa(bool okcool, int couleur, std::string brd, std::string ct){
+graphe g(brd, ct);
+std::vector<std::string> frontpareto = g.getFrontiereSolPareto(okcool);
+std::pair<float,float> PdsPareto;
+for(std::string  i : frontpareto)
+{
+    PdsPareto = g.getPoidsSolPareto(i);
+    line(screen, 8*PdsPareto.first + 148, 550 - 8*PdsPareto.second,8*PdsPareto.first + 152,550 - 8*PdsPareto.second, couleur);
+    line(screen, 8*PdsPareto.first + 150, 548 - 8*PdsPareto.second,8*PdsPareto.first + 150,552 - 8*PdsPareto.second, couleur);
+}
+}
+
 
 void AfficherGraphe(std::string choix)
 {
+<<<<<<< HEAD
     std::string weight = choix + "_weights_0.txt";
     bool fin = false, prim1 = false, prim2 = false;
     boutton temp;
@@ -321,12 +352,79 @@ void AfficherGraphe(std::string choix)
         }
     }
 }
+=======
+                std::string weight = choix + "_weights_0.txt";
+                bool fin = false, prim1 = false, prim2 = false, par = false;
+                boutton temp;
+                std::string selection;
+                std::vector<boutton> bouttons, paret;
+                choix = choix + ".txt";
+                graphe g(choix,weight);
+                FONT * font1 = load_font("fontsommet.pcx",NULL,NULL);
+                AfficherDistCost(g,font1, prim1, prim2);
+                temp.modifyboutton(520,50,"Cout 1");
+                bouttons.push_back(temp);
+                temp.modifyboutton(520,100,"Cout 2");
+                bouttons.push_back(temp);
+                temp.modifyboutton(520,150,"Pareto");
+                bouttons.push_back(temp);
+                temp.modifyboutton(520,200,"Retour");
+                bouttons.push_back(temp);
+                while(fin == false && par == false)
+                {
+                    selection = chooseVille(bouttons);
+                    rest(100);
+                    if(selection == "Cout 1")
+                    {
+                        if(prim1 == false) prim1 = true;
+                        else prim1 = false;
+                    }
+                    if(selection == "Cout 2")
+                    {
+                        if(prim2 == false) prim2 = true;
+                        else prim2 = false;
+                    }
+                    if(selection == "Retour") fin = true;
+                    if(selection == "Pareto") par = true;
+                if(prim1 == false && prim2 == false)
+                {
+                    AfficherDistCost(g,font1,prim1,prim2);
+                }
+                if(prim1 == true && prim2 == false)
+                {
+                    AfficherDistCost(g,font1,prim1,prim2);
+                    g.AfficherDistance();
+                }
+                if(prim1 == false && prim2 == true)
+                {
+                    AfficherDistCost(g,font1,prim1,prim2);
+                    g.AfficherCost();
+                }
+                if(prim1 == true && prim2 == true)
+                {
+                    AfficherDistCost(g,font1,prim1,prim2);
+                    g.AfficherDistance();
+                    g.AfficherCost();
+                    g.AfficherBoth();
+                }
+                while (par == true)
+                {
+                        AfficherGraphique();
+                        PaPa(false, makecol(255,0,0), choix, weight);
+                        PaPa(true, makecol(0,255,0), choix , weight);
+                        temp.modifyboutton(600,30,"Retour");
+                        paret.push_back(temp);
+                        textprintf_ex(screen,font1,600,30,makecol(0,0,0),-1,"Retour");
+                        selection = chooseVille(paret);
+                        if(selection == "Retour")
+                        {
+                            AfficherDistCost(g,font1,prim1,prim2);
+                            par = false;
+                        }
+>>>>>>> 8f28d529f39465cab0850d5dd460598d7d90b483
 
-void AfficherGraphique(){
-    clear_to_color(screen,makecol(255,255,255));
-    line(screen, 150, 50, 150, 550, makecol(0,0,0));
-    line(screen, 150, 550, 650, 550, makecol(0,0,0));
-    triangle(screen,150, 25, 140, 50, 160, 50,makecol(0,0,0));
+                }
+            }
 }
 
 
@@ -344,7 +442,6 @@ void initialisation()
         exit(EXIT_FAILURE);
     }
     show_mouse(screen);
-    initMenu();
     status optionMenu = menuLoop;
     std::string choix, weight;
     while (!key[KEY_ESC])
@@ -352,16 +449,25 @@ void initialisation()
         switch (optionMenu)
         {
         case menuLoop :
+            initMenu();
             menu(&optionMenu);
             break;
 
         case chargerVille :
             choix = menuCharger();
-            AfficherGraphe(choix);
+            if(choix != "Retour")   AfficherGraphe(choix);
+            else optionMenu = menuLoop;
             break;
+
+        case leaveLoop:
+            return ;
+            break;
+<<<<<<< HEAD
         case parcours:
             AfficherGraphique();
             break;
+=======
+>>>>>>> 8f28d529f39465cab0850d5dd460598d7d90b483
         }
         rest(64);
     }

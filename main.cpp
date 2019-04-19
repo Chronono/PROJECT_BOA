@@ -10,9 +10,7 @@
 
 int main()
 {
-    graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
     initialisation();
-
     return 0;
 }
 END_OF_MAIN();

@@ -25,7 +25,7 @@ class graphe
         double getDistance(std::string v1, std::string v2);
         float getTotCost(std::string id) const;
         std::pair<float,float> getPoidsSolPareto(std::string);
-        std::vector<std::string> getFrontiereSolPareto();
+        std::vector<std::string> getFrontiereSolPareto(bool);
         int getOrder() const;
         int getSize() const;
         int isEulerien() const;
