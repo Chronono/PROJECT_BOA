@@ -49,7 +49,7 @@ void addLine(std::string path)
     std::ifstream file2(valeur + "_weights_0.txt", std::ios::in);
     if(file1 && file2)
     {
-    int j=0;
+    //int j=0;
     std::string ligne;
     std::vector<std::string> file;
     std::ifstream fichier1(path, std::ios::in);
@@ -134,7 +134,7 @@ void afficherBase(BITMAP* Villes,FONT* font1,int* k, int* x, int* y){
                     textprintf_ex(screen,font1,350,510,makecol(255,255,255),-1,"Voir Plus");
                     textprintf_ex(screen,font1,15,150,makecol(0,0,0),-1,"Ajouter");
                     textprintf_ex(screen,font1,15,230,makecol(0,0,0),-1,"Supprimer");
-                    textprintf_ex(screen,font1,15,300,makecol(0,0,0),-1,"Retour");
+                    textprintf_ex(screen,font1,15,310,makecol(0,0,0),-1,"Retour");
                     *k=0;
                     *x = 350;
                     *y = 150;
@@ -183,9 +183,9 @@ std::string menuCharger()
                 page.push_back(but);
                 but.modifyboutton(15,160,"Ajouter");
                 page.push_back(but);
-                but.modifyboutton(15,230,"Supprimer");
+                but.modifyboutton(15,240,"Supprimer");
                 page.push_back(but);
-                but.modifyboutton(15,300,"Retour");
+                but.modifyboutton(15,320,"Retour");
                 page.push_back(but);
                 choix = chooseVille(page);
                 if (choix != "Voir Plus" && choix != "Supprimer" && choix != "Ajouter" && choix != "Retour")
@@ -265,15 +265,16 @@ void AfficherDistCost(graphe g,FONT* font1,bool prim1, bool prim2)
     textprintf_ex(screen,font1,520,50,c1,-1,"Cout 1");
     textprintf_ex(screen,font1,520,100,c2,-1,"Cout 2");
     textprintf_ex(screen,font1,520,150,makecol(0,0,0),-1,"Pareto");
-    textprintf_ex(screen,font1,520,200,makecol(0,0,0),-1,"Retour");
+    textprintf_ex(screen,font1,520,200,makecol(0,0,0),-1,"Dist/Cout");
+    textprintf_ex(screen,font1,520,250,makecol(0,0,0),-1,"Retour");
 }
 
-void AfficherGraphique(){
+void AfficherGraphique(std::string V1, std::string V2){
     clear_to_color(screen,makecol(255,255,255));
     line(screen, 150, 50, 150, 550, makecol(0,0,0));
     line(screen, 150, 550, 650, 550, makecol(0,0,0));
-    textprintf_ex(screen,font,60,40,makecol(0,0,0),-1,"Cout 1");
-    textprintf_ex(screen,font,650,570,makecol(0,0,0),-1,"Cout 2");
+    textprintf_ex(screen,font,60,40,makecol(0,0,0),-1,V1.c_str());
+    textprintf_ex(screen,font,650,570,makecol(0,0,0),-1,V2.c_str());
     triangle(screen,150, 25,140, 50,160, 50,makecol(0,0,0));
     triangle(screen,650,560,650,540,675,550,makecol(0,0,0));
 }
@@ -286,8 +287,24 @@ std::pair<float,float> PdsPareto;
 for(std::string  i : frontpareto)
 {
     PdsPareto = g.getPoidsSolPareto(i);
-    line(screen, 8*PdsPareto.first + 148, 550 - 8*PdsPareto.second,8*PdsPareto.first + 152,550 - 8*PdsPareto.second, couleur);
-    line(screen, 8*PdsPareto.first + 150, 548 - 8*PdsPareto.second,8*PdsPareto.first + 150,552 - 8*PdsPareto.second, couleur);
+    line(screen, 6*PdsPareto.first + 148, 550 - 6*PdsPareto.second,6*PdsPareto.first + 152,550 - 6*PdsPareto.second, couleur);
+    line(screen, 6*PdsPareto.first + 150, 548 - 6*PdsPareto.second,6*PdsPareto.first + 150,552 - 6*PdsPareto.second, couleur);
+}
+}
+
+void AfficherGdist(graphe g){
+std::vector<std::string> frontpareto = g.getFrontiereSolPareto(true);
+std::pair<float,float> PdsPareto;
+std::unordered_map<std::string,Arete*> aretedist;
+double PdsDistance;
+AfficherGraphique("Distance","Cout Total");
+for(std::string  i : frontpareto)
+{
+    PdsPareto = g.getPoidsSolPareto(i);
+    aretedist = g.getMapAreteDistance(i);
+    PdsDistance = g.getTotDistance(aretedist);
+    line(screen, 3*(PdsPareto.first + PdsPareto.second) + 148, 550 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 152,550 - PdsDistance/5, makecol(0,0,0));
+    line(screen, 3*(PdsPareto.first + PdsPareto.second) + 150, 548 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 150,552 - PdsDistance/5, makecol(0,0,0));
 }
 }
 
@@ -295,7 +312,7 @@ for(std::string  i : frontpareto)
 void AfficherGraphe(std::string choix)
 {
                 std::string weight = choix + "_weights_0.txt";
-                bool fin = false, prim1 = false, prim2 = false, par = false;
+                bool fin = false, prim1 = false, prim2 = false, par = false, gdist = false;
                 boutton temp;
                 std::string selection;
                 std::vector<boutton> bouttons, paret;
@@ -309,7 +326,9 @@ void AfficherGraphe(std::string choix)
                 bouttons.push_back(temp);
                 temp.modifyboutton(520,150,"Pareto");
                 bouttons.push_back(temp);
-                temp.modifyboutton(520,200,"Retour");
+                temp.modifyboutton(520,200,"Dist/Cout");
+                bouttons.push_back(temp);
+                temp.modifyboutton(520,250,"Retour");
                 bouttons.push_back(temp);
                 while(fin == false && par == false)
                 {
@@ -327,6 +346,7 @@ void AfficherGraphe(std::string choix)
                     }
                     if(selection == "Retour") fin = true;
                     if(selection == "Pareto") par = true;
+                    if(selection == "Dist/Cout") gdist = true;
                 if(prim1 == false && prim2 == false)
                 {
                     AfficherDistCost(g,font1,prim1,prim2);
@@ -350,10 +370,11 @@ void AfficherGraphe(std::string choix)
                 }
                 while (par == true)
                 {
-                        AfficherGraphique();
+                        AfficherGraphique("Cout 1", "Cout 2");
                         PaPa(false, makecol(255,0,0), choix, weight);
                         PaPa(true, makecol(0,255,0), choix , weight);
                         temp.modifyboutton(600,30,"Retour");
+                        paret.clear();
                         paret.push_back(temp);
                         textprintf_ex(screen,font1,600,30,makecol(0,0,0),-1,"Retour");
                         selection = chooseVille(paret);
@@ -361,6 +382,20 @@ void AfficherGraphe(std::string choix)
                         {
                             AfficherDistCost(g,font1,prim1,prim2);
                             par = false;
+                        }
+                }
+                while (gdist == true)
+                {
+                        AfficherGdist(g);
+                        temp.modifyboutton(600,30,"Retour");
+                        paret.clear();
+                        paret.push_back(temp);
+                        textprintf_ex(screen,font1,600,30,makecol(0,0,0),-1,"Retour");
+                        selection = chooseVille(paret);
+                        if(selection == "Retour")
+                        {
+                            AfficherDistCost(g,font1,prim1,prim2);
+                            gdist = false;
                         }
                 }
             }

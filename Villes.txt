@@ -1,5 +1,4 @@
 Quatar
-Pandora
 cubetown
 Ottawa
 broadway
@@ -7,3 +6,5 @@ MDR
 Truc de fou
 incroyable
 wouaaa
+triville
+manhattan

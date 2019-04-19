@@ -58,13 +58,10 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
     for (auto i : m_vertices)
         i.second->setPaths(Dijkstra(i.second->getId()));
 
-    std::cout << "\naffiche du chemin du sommet 4 vers le sommet 0 :  ";
     m_vertices.find("0")->second->displayPath("7");
 
     primDistance = parcoursPrim(false);
     primCost = parcoursPrim(true);
-    std::vector<std::string> test = gen_binSolution();
-    m_solutionsdepareto = pareto(test);
 }
 
 void graphe::afficherPrim(std::list<Arete*> prim, int couleur){
@@ -98,7 +95,7 @@ void graphe::afficherPrim(std::list<Arete*> prim, int couleur){
 void graphe::display() const{
     clear_to_color(screen,makecol(255,255,255));
     FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
-    FONT * fontarete = load_font("areteId.pcx",NULL,NULL);
+    //FONT * fontarete = load_font("areteId.pcx",NULL,NULL);
     BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
     double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
     std::string info;
@@ -352,6 +349,11 @@ double graphe::getDistance(std::string v1, std::string v2)
     return distance;
 }
 
+float graphe::getTotCost(std::string id) const
+{
+    return m_aretes.find(id)->second->getCost1() + m_aretes.find(id)->second->getCost2();
+}
+
 int graphe::getOrder() const
 {
     return m_vertices.size();
@@ -386,7 +388,6 @@ double graphe::getTotDistance(const std::unordered_map<std::string,Arete*>& A) c
 /// SOURCE DU CODE DU CONVERTISSEUR BINAIRE : INTERNET (+ modifications personnelles) ///
 std::string graphe::toBinary(int n)
 {
-    std::cout << n << " convert to ";
     std::string r;
     /// j'ai ajouter la condition r.size() < 8 afin de limiter la taille de la chaine renvoyée, j'ai choisit 8 car un octet correspond à 8 bits
     while (n!=0 && r.size() < m_aretes.size()) {
@@ -397,7 +398,6 @@ std::string graphe::toBinary(int n)
     while (r.size() < m_aretes.size()) {
         r = "0" + r;
     }
-    std::cout << r << std::endl;
 
     return r;
 }
@@ -440,7 +440,7 @@ std::vector<std::string> graphe::getGPCC(std::vector<std::string>& combinaisons)
 
 std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     std::pair<float,float> poids; /// first -> distance, second -> cout
-    for (int i = 0; i < code_bin.size(); i++)
+    for (unsigned int i = 0; i < code_bin.size(); i++)
     {
         char ind[m_aretes.size()];
         sprintf(ind, "%d", (code_bin.size() -1) - i);
@@ -454,47 +454,56 @@ std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     return poids;
 }
 
+std::unordered_map<std::string,Arete*> graphe::getMapAreteDistance(std::string code_bin){
+    std::unordered_map<std::string,Arete*> Aretes;
+    for (unsigned int i = 0; i < code_bin.size(); i++)
+    {
+        char ind[m_aretes.size()];
+        sprintf(ind, "%d", (code_bin.size() -1) - i);
+        if (code_bin[i] == '1')
+        {
+            Aretes.emplace(m_aretes.find(ind)->second->getId(),m_aretes.find(ind)->second);
+        }
+    }
+    return Aretes;
+}
+
+
+
 std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false return dominé true dominant
 {
     std::vector<std::string> tabParetoDomine;
     std::vector<std::string> tabParetoDominant;
+    std::vector<std::string> test = gen_binSolution();
+    m_solutionsdepareto = pareto(test);
 
     for (auto i : m_solutionsdepareto)
     {
-        std::cout << "Debug #1 -> boucle sol Pareto\n";
         if (tabParetoDominant.empty()==true){
             tabParetoDominant.push_back(i);
-            std::cout << "Debug #2 -> pas de dominant, on ajoute le refentiel dominant\n";
         }
         else
         {
             std::pair<float,float> poidTest = getPoidsSolPareto(i);
-            //for (auto j : tabParetoDominant)
             size_t sizeDominantInstantT = tabParetoDominant.size();
             bool placed = false;
             while (placed == false){
-            for (int j = 0; j < sizeDominantInstantT; j++)
+            for (unsigned int j = 0; j < sizeDominantInstantT; j++)
             {
-                std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
                 std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
-                std::cout << "Debug #4 -> boucle dominante + poidSolPareto : (" << poidTest.first << "," << poidTest.second << "), poid du dominant : (" << poidDominant.first << "," << poidDominant.second << ")" << std::endl;
                 if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
-                    std::cout << "Debug #5 -> solution domine\n";
                     tabParetoDomine.push_back(i);
                     placed = true;
                     break;
                     }
                 else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
                 {
-                    std::cout << "Debug #5_1 -> solution dominante\n";
                     tabParetoDominant.push_back(i);
                     tabParetoDomine.push_back(tabParetoDominant[j]);
                     tabParetoDominant.erase(tabParetoDominant.begin() + j);
-                    std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
                     placed=true;
                 }
-                else if (j == sizeDominantInstantT-1){
-                    std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
+                else if ((int)j == (int)sizeDominantInstantT-1){
                     tabParetoDominant.push_back(i);
                     placed = true;
                 }
@@ -520,7 +529,6 @@ std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false re
     }
 
     for (auto i : tabParetoDominant)
-        std::cout << "pareto dominant : " << i << std::endl;
     if (choice==true)
         return tabParetoDominant;
     else
@@ -529,7 +537,6 @@ std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false re
 
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
 {
-    std::cout << "\nSolutions de pareto :" << std::endl;
     std::vector<std::string> paretoSolutions;
 
     /// pour chaque schéma :
@@ -561,21 +568,17 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
             }
             if (visited.size() == m_vertices.size()) {
                 paretoSolutions.push_back(code);
-                std::cout << code;
                 int poid1=0;
                 int poid2=0;
                 for (unsigned int i = 0; i < code.size();i++) {
                     char ind[m_aretes.size()];
                     sprintf(ind, "%d", (code.size() -1) - i);
-                    std::cout << "  ind : " << ind;
                     if (code[i] == '1'){
                     poid1 += m_aretes.find(ind)->second->getCost1();
                     poid2 += m_aretes.find(ind)->second->getCost2();
                     }
                 }
-                std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;
                 std::pair<float,float> poids = getPoidsSolPareto(code);
-                std::cout << " --> (D:" << poids.first << ",P:" << poids.second << ")"<< std::endl;
             }
         }
     }
