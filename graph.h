@@ -23,6 +23,7 @@ class graphe
         std::unordered_map<std::string, std::string> Dijkstra(std::string Vstart);
         std::list<Arete*> parcoursPrim(bool);
         double getDistance(std::string v1, std::string v2);
+        float getTotCost(std::string id) const;
         std::pair<float,float> getPoidsSolPareto(std::string);
         std::vector<std::string> getFrontiereSolPareto();
         int getOrder() const;

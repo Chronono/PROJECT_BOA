@@ -97,7 +97,7 @@ void graphe::afficherPrim(std::list<Arete*> prim, int couleur){
 void graphe::display() const{
     clear_to_color(screen,makecol(255,255,255));
     FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
-    FONT * fontarete = load_font("areteId.pcx",NULL,NULL);
+    //FONT * fontarete = load_font("areteId.pcx",NULL,NULL);
     BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
     double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
     std::string info;
@@ -351,6 +351,11 @@ double graphe::getDistance(std::string v1, std::string v2)
     return distance;
 }
 
+float graphe::getTotCost(std::string id) const
+{
+    return m_aretes.find(id)->second->getCost1() + m_aretes.find(id)->second->getCost2();
+}
+
 int graphe::getOrder() const
 {
     return m_vertices.size();
@@ -385,7 +390,6 @@ double graphe::getTotDistance() const
 /// SOURCE DU CODE DU CONVERTISSEUR BINAIRE : INTERNET (+ modifications personnelles) ///
 std::string graphe::toBinary(int n)
 {
-    std::cout << n << " convert to ";
     std::string r;
     /// j'ai ajouter la condition r.size() < 8 afin de limiter la taille de la chaine renvoyée, j'ai choisit 8 car un octet correspond à 8 bits
     while (n!=0 && r.size() < m_aretes.size()) {
@@ -396,7 +400,6 @@ std::string graphe::toBinary(int n)
     while (r.size() < m_aretes.size()) {
         r = "0" + r;
     }
-    std::cout << r << std::endl;
 
     return r;
 }
@@ -439,7 +442,7 @@ std::vector<std::string> graphe::getGPCC(std::vector<std::string>& combinaisons)
 
 std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     std::pair<float,float> poids; /// first -> distance, second -> cout
-    for (int i = 0; i < code_bin.size(); i++)
+    for (unsigned int i = 0; i < code_bin.size(); i++)
     {
         char ind[m_aretes.size()];
         sprintf(ind, "%d", (code_bin.size() -1) - i);
@@ -472,7 +475,7 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
             size_t sizeDominantInstantT = tabParetoDominant.size();
             bool placed = false;
             while (placed == false){
-            for (int j = 0; j < sizeDominantInstantT; j++)
+            for (unsigned int j = 0; j < sizeDominantInstantT; j++)
             {
                 std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
                 std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
@@ -492,7 +495,7 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
                     std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
                     placed=true;
                 }
-                else if (j == sizeDominantInstantT-1){
+                else if ((int)j == (int)sizeDominantInstantT-1){
                     std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
                     tabParetoDominant.push_back(i);
                     placed = true;
@@ -520,6 +523,7 @@ std::vector<std::string> graphe::getFrontiereSolPareto()
 
     for (auto i : tabParetoDominant)
         std::cout << "pareto dominant : " << i << std::endl;
+    return {"nothing", "something"};
 }
 
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)

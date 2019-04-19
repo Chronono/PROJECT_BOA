@@ -135,11 +135,14 @@
 	<string>
 	<iostream>
 
-1555662776 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
+1555669389 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
 	<math.h>
 	"graph.h"
+	<math.h>
+	"utilalleg.h"
+	<allegro.h>
 
-1555665695 c:\users\bastien\projet piscine\projet boa\graph.h
+1555669389 c:\users\bastien\projet piscine\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -230,7 +233,7 @@
 	<time.h>
 	<allegro.h>
 
-1555663935 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
+1555671951 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"

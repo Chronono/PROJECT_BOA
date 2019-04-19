@@ -49,7 +49,7 @@ void addLine(std::string path)
     std::ifstream file2(valeur + "_weights_0.txt", std::ios::in);
     if(file1 && file2)
     {
-    int j=0;
+    //int j=0;
     std::string ligne;
     std::vector<std::string> file;
     std::ifstream fichier1(path, std::ios::in);
@@ -107,7 +107,7 @@ void menu(status* optionMenu)          /// Permet d'accéder aux différents choix
             *optionMenu = parcours;
         if(mouse_x>=285 && mouse_x<=415 && mouse_y >=325 && mouse_y <= 350)    // on appuye sur option
             *optionMenu = leaveLoop;
-        printf("%d", optionMenu);
+        //printf("%d", optionMenu);
     }
 }
 
@@ -249,7 +249,7 @@ std::string menuCharger()
     return choix;
 }
 
-bool AfficherDistCost(graphe g,FONT* font1,bool prim1, bool prim2)
+void AfficherDistCost(graphe g,FONT* font1,bool prim1, bool prim2)
 {
     clear_to_color(screen,makecol(255,255,255));
     g.display();
@@ -268,58 +268,58 @@ bool AfficherDistCost(graphe g,FONT* font1,bool prim1, bool prim2)
 
 void AfficherGraphe(std::string choix)
 {
-                std::string weight = choix + "_weights_0.txt";
-                bool fin = false, prim1 = false, prim2 = false;
-                boutton temp;
-                std::string selection;
-                std::vector<boutton> bouttons;
-                choix = choix + ".txt";
-                graphe g(choix,weight);
-                FONT * font1 = load_font("fontsommet.pcx",NULL,NULL);
-                AfficherDistCost(g,font1, prim1, prim2);
-                temp.modifyboutton(520,50,"Distance");
-                bouttons.push_back(temp);
-                temp.modifyboutton(520,100,"Cost");
-                bouttons.push_back(temp);
-                temp.modifyboutton(520,150,"Menu");
-                bouttons.push_back(temp);
-                while(fin == false)
-                {
-                    selection = chooseVille(bouttons);
-                    rest(100);
-                    if(selection == "Distance")
-                    {
-                        if(prim1 == false) prim1 = true;
-                        else prim1 = false;
-                    }
-                    if(selection == "Cost")
-                    {
-                        if(prim2 == false) prim2 = true;
-                        else prim2 = false;
-                    }
-                    if(selection == "Menu") fin = true;
-                if(prim1 == false && prim2 == false)
-                {
-                    AfficherDistCost(g,font1,prim1,prim2);
-                }
-                if(prim1 == true && prim2 == false)
-                {
-                    AfficherDistCost(g,font1,prim1,prim2);
-                    g.AfficherDistance();
-                }
-                if(prim1 == false && prim2 == true)
-                {
-                    AfficherDistCost(g,font1,prim1,prim2);
-                    g.AfficherCost();
-                }
-                if(prim1 == true && prim2 == true)
-                {
-                    AfficherDistCost(g,font1,prim1,prim2);
-                    g.AfficherDistance();
-                    g.AfficherCost();
-                    g.AfficherBoth();
-                }
-            }
+    std::string weight = choix + "_weights_0.txt";
+    bool fin = false, prim1 = false, prim2 = false;
+    boutton temp;
+    std::string selection;
+    std::vector<boutton> bouttons;
+    choix = choix + ".txt";
+    graphe g(choix,weight);
+    FONT * font1 = load_font("fontsommet.pcx",NULL,NULL);
+    AfficherDistCost(g,font1, prim1, prim2);
+    temp.modifyboutton(520,50,"Distance");
+    bouttons.push_back(temp);
+    temp.modifyboutton(520,100,"Cost");
+    bouttons.push_back(temp);
+    temp.modifyboutton(520,150,"Menu");
+    bouttons.push_back(temp);
+    while(fin == false)
+    {
+        selection = chooseVille(bouttons);
+        rest(100);
+        if(selection == "Distance")
+        {
+            if(prim1 == false) prim1 = true;
+            else prim1 = false;
+        }
+        if(selection == "Cost")
+        {
+            if(prim2 == false) prim2 = true;
+            else prim2 = false;
+        }
+        if(selection == "Menu") fin = true;
+        if(prim1 == false && prim2 == false)
+        {
+            AfficherDistCost(g,font1,prim1,prim2);
+        }
+        if(prim1 == true && prim2 == false)
+        {
+            AfficherDistCost(g,font1,prim1,prim2);
+            g.AfficherDistance();
+        }
+        if(prim1 == false && prim2 == true)
+        {
+            AfficherDistCost(g,font1,prim1,prim2);
+            g.AfficherCost();
+        }
+        if(prim1 == true && prim2 == true)
+        {
+            AfficherDistCost(g,font1,prim1,prim2);
+            g.AfficherDistance();
+            g.AfficherCost();
+            g.AfficherBoth();
+        }
+    }
 }
 
 void AfficherGraphique(){
@@ -361,6 +361,7 @@ void initialisation()
             break;
         case parcours:
             AfficherGraphique();
+            break;
         }
         rest(64);
     }
