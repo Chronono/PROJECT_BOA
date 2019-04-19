@@ -38,7 +38,7 @@ class graphe
 
     private:
         /// functions
-        double getTotDistance() const;
+        double getTotDistance(const std::unordered_map<std::string,Arete*>& A) const;
         std::string toBinary(int n);
         std::vector<std::string> gen_binSolution();
         std::vector<std::string> getGPCC(std::vector<std::string>& combinaisons);

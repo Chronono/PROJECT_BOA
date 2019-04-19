@@ -362,7 +362,6 @@ void AfficherGraphe(std::string choix)
                             AfficherDistCost(g,font1,prim1,prim2);
                             par = false;
                         }
-
                 }
             }
 }

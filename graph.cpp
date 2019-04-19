@@ -189,7 +189,7 @@ FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
 void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances)
 {
     for (auto v = G.begin(); v != G.end(); v++) {
-        distances.emplace(v->second->getId(), getTotDistance());
+        distances.emplace(v->second->getId(), getTotDistance(m_aretes));
     }
     distances.find(Vstart)->second = 0;
     /// affiche distances
@@ -199,7 +199,7 @@ void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, So
 std::string graphe::findMin(std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances) const
 {
     //std::cout << "FIND_MIN :\n";
-    int mini = getTotDistance() + 1;
+    int mini = getTotDistance(m_aretes) + 1;
     //std::cout << "mini = " << mini;
     std::string v = "empty";
     //std::cout << "   v = " << v << std::endl;
@@ -374,10 +374,10 @@ int graphe::isEulerien(std::unordered_map<std::string,Sommet*> vertices) const{
     else return 0;
 }
 
-double graphe::getTotDistance() const
+double graphe::getTotDistance(const std::unordered_map<std::string,Arete*>& A) const
 {
     double totDist = 0;
-    for (auto a : m_aretes) {
+    for (auto a : A) {
         totDist += a.second->getDistance();
     }
     return totDist;

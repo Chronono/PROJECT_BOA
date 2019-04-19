@@ -16,7 +16,7 @@
 	<time.h>
 	<allegro.h>
 
-1555669714 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
+1555675732 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"
@@ -93,7 +93,7 @@
 	<queue>
 	"arete.h"
 
-1555669898 c:\users\alex\desktop\testallle\tetstete\graph.h
+1555676222 c:\users\alex\desktop\testallle\tetstete\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -202,7 +202,7 @@
 
 1555663145 
 
-1555670122 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
+1555676222 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
 	<math.h>
 	"graph.h"
 	<math.h>
