@@ -280,8 +280,7 @@ void AfficherGraphique(std::string V1, std::string V2){
 }
 
 
-void PaPa(bool okcool, int couleur, std::string brd, std::string ct){
-graphe g(brd, ct);
+void PaPa(graphe g, bool okcool, int couleur){
 std::vector<std::string> frontpareto = g.getFrontiereSolPareto(okcool);
 std::pair<float,float> PdsPareto;
 for(std::string  i : frontpareto)
@@ -293,19 +292,19 @@ for(std::string  i : frontpareto)
 }
 
 void AfficherGdist(graphe g){
+AfficherGraphique("Distance","Cout Total");
 std::vector<std::string> frontpareto = g.getFrontiereSolPareto(true);
 std::pair<float,float> PdsPareto;
 std::unordered_map<std::string,Arete*> aretedist;
 double PdsDistance;
-AfficherGraphique("Distance","Cout Total");
-for(std::string  i : frontpareto)
-{
-    PdsPareto = g.getPoidsSolPareto(i);
-    aretedist = g.getMapAreteDistance(i);
-    PdsDistance = g.getTotDistance(aretedist);
-    line(screen, 3*(PdsPareto.first + PdsPareto.second) + 148, 550 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 152,550 - PdsDistance/5, makecol(0,0,0));
-    line(screen, 3*(PdsPareto.first + PdsPareto.second) + 150, 548 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 150,552 - PdsDistance/5, makecol(0,0,0));
-}
+    for(std::string  i : frontpareto)
+    {
+        PdsPareto = g.getPoidsSolPareto(i);
+        aretedist = g.getMapAreteDistance(i);
+        PdsDistance = g.getTotDistance(aretedist);
+        line(screen, 3*(PdsPareto.first + PdsPareto.second) + 148, 550 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 152,550 - PdsDistance/5, makecol(0,0,0));
+        line(screen, 3*(PdsPareto.first + PdsPareto.second) + 150, 548 - PdsDistance/5,3*(PdsPareto.first + PdsPareto.second) + 150,552 - PdsDistance/5, makecol(0,0,0));
+    }
 }
 
 
@@ -371,8 +370,8 @@ void AfficherGraphe(std::string choix)
                 while (par == true)
                 {
                         AfficherGraphique("Cout 1", "Cout 2");
-                        PaPa(false, makecol(255,0,0), choix, weight);
-                        PaPa(true, makecol(0,255,0), choix , weight);
+                        PaPa(g,false, makecol(255,0,0));
+                        PaPa(g,true, makecol(0,255,0));
                         temp.modifyboutton(600,30,"Retour");
                         paret.clear();
                         paret.push_back(temp);
