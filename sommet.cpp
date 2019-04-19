@@ -77,6 +77,14 @@ int Sommet::getDeg() const{
     return m_voisins.size();
 }
 
+double Sommet::getX(){
+    return this->m_x;
+}
+
+double Sommet::getY(){
+    return this->m_y;
+}
+
 
 Sommet::~Sommet()
 {

@@ -1,11 +1,13 @@
 #include <math.h>
 #include "graph.h"
+#include <math.h>
+#include "utilalleg.h"
+#include <allegro.h>
 
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
     /// ouverture du fichier
     std::ifstream fichier("files/" + nom_fichier);
-
     if (fichier)
     {
         int order;
@@ -16,7 +18,6 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
             fichier >> id >> x >> y;
             m_vertices.emplace(id, new Sommet(id,x,y));
         }
-
         int size;
         fichier >> size;
         for (int i=0; i < size; i++) {
@@ -51,28 +52,136 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
     /// fermeture du fichier_weight
     fichier_weight.close();
 
+
     /// application de Dijkstra à chaque sommets
     for (auto i : m_vertices)
         i.second->setPaths(Dijkstra(i.second->getId()));
 
     std::cout << "\naffiche du chemin du sommet 4 vers le sommet 0 :  ";
     m_vertices.find("0")->second->displayPath("7");
+
+    primDistance = parcoursPrim(false);
+    primCost = parcoursPrim(true);
+    std::vector<std::string> test = gen_binSolution();
+    m_solutionsdepareto = pareto(test);
+}
+
+void graphe::afficherPrim(std::list<Arete*> prim, int couleur){
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    for (auto i : prim) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, couleur);
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
 }
 
 void graphe::display() const{
-    std::cout<<"graphe :\n"<<std::endl;
-
-    std::cout<<" Ordre : " << getOrder() <<std::endl;
-    for (auto i : m_vertices){
-        std::cout<<" Sommet ";
-        i.second->afficherData();
-        i.second->afficherVoisins();
-    }
-
-    std::cout << "\n Taille : " << getSize() << std::endl;
+    clear_to_color(screen,makecol(255,255,255));
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    FONT * fontarete = load_font("areteId.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    std::string info;
     for (auto i : m_aretes) {
-        std::cout << " Arete ";
-        i.second->display();
+        for (auto j : m_vertices){
+            if(j.second->getId() == i.second->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i.second->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, makecol(0,0,0));
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i.second->getId().c_str());
+        info = i.second->getId() + ": (" + std::to_string((int)i.second->getCost2()) + ";" + std::to_string((int)i.second->getCost1()) + ")";
+        textprintf_ex(screen,fontsommet,670,50+30*std::stoi(i.second->getId()),makecol(0,0,0),-1,info.c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
+}
+
+
+void graphe::AfficherDistance(){
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    for (auto i : primDistance) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, makecol(255,0,0));
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
+}
+
+
+void graphe::AfficherCost(){
+FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    for (auto i : primCost) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, makecol(0,0,255));
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
     }
 }
 
@@ -161,6 +270,44 @@ std::unordered_map<std::string, std::string> graphe::Dijkstra(std::string Vstart
         //for (auto d : distances) { std::cout << "distance de " << d.first << " par rapport a " << Vstart << " : " << d.second << std::endl; }
     }
     return path;
+}
+
+void graphe::AfficherBoth()
+{
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+
+    for (auto i : primDistance) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        for(auto k : primCost)
+        {
+            if(i->getId() == k->getId())
+            {
+                line(screen, x1, y1, x2, y2, makecol(0,255,0));
+            }
+        }
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+
+
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
 }
 
 std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, prim fct distance sinon fct cost
@@ -290,6 +437,91 @@ std::vector<std::string> graphe::getGPCC(std::vector<std::string>& combinaisons)
     return solutions;
 }
 
+std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
+    std::pair<float,float> poids; /// first -> distance, second -> cout
+    for (int i = 0; i < code_bin.size(); i++)
+    {
+        char ind[m_aretes.size()];
+        sprintf(ind, "%d", (code_bin.size() -1) - i);
+        if (code_bin[i] == '1')
+        {
+            poids.first += m_aretes.find(ind)->second->getCost2();
+            poids.second += m_aretes.find(ind)->second->getCost1();
+        }
+    }
+
+    return poids;
+}
+
+std::vector<std::string> graphe::getFrontiereSolPareto()
+{
+    std::vector<std::string> tabParetoDomine;
+    std::vector<std::string> tabParetoDominant;
+
+    for (auto i : m_solutionsdepareto)
+    {
+        std::cout << "Debug #1 -> boucle sol Pareto\n";
+        if (tabParetoDominant.empty()==true){
+            tabParetoDominant.push_back(i);
+            std::cout << "Debug #2 -> pas de dominant, on ajoute le refentiel dominant\n";
+        }
+        else
+        {
+            std::pair<float,float> poidTest = getPoidsSolPareto(i);
+            //for (auto j : tabParetoDominant)
+            size_t sizeDominantInstantT = tabParetoDominant.size();
+            bool placed = false;
+            while (placed == false){
+            for (int j = 0; j < sizeDominantInstantT; j++)
+            {
+                std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
+                std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
+                std::cout << "Debug #4 -> boucle dominante + poidSolPareto : (" << poidTest.first << "," << poidTest.second << "), poid du dominant : (" << poidDominant.first << "," << poidDominant.second << ")" << std::endl;
+                if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
+                    std::cout << "Debug #5 -> solution domine\n";
+                    tabParetoDomine.push_back(i);
+                    placed = true;
+                    break;
+                    }
+                else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
+                {
+                    std::cout << "Debug #5_1 -> solution dominante\n";
+                    tabParetoDominant.push_back(i);
+                    tabParetoDomine.push_back(tabParetoDominant[j]);
+                    tabParetoDominant.erase(tabParetoDominant.begin() + j);
+                    std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
+                    placed=true;
+                }
+                else if (j == sizeDominantInstantT-1){
+                    std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
+                    tabParetoDominant.push_back(i);
+                    placed = true;
+                }
+                    /*
+                else if (j == tabParetoDominant[tabParetoDominant.size()])
+                {
+                    tabParetoDominant.push_back(j);
+                    for (int k = 0; k < tabParetoDominant.size(); k++)
+                    {
+                        if (tabParetoDominant[k] != j){
+                            std::pair<float,float> poidDominantTest = getPoidsSolPareto(tabParetoDominant[k]);
+                            if (poidDominant.first < poidDominantTest.first && poidDominant.second < poidDominantTest.second)
+                            {
+                                tabParetoDomine.push_back(tabParetoDominant[k]);
+                                tabParetoDominant.erase(tabParetoDominant.begin() + k);
+                            }
+                        }
+                    }
+                }*/
+            }
+            }
+        }
+    }
+
+    for (auto i : tabParetoDominant)
+        std::cout << "pareto dominant : " << i << std::endl;
+}
+
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
 {
     std::cout << "\nSolutions de pareto :" << std::endl;
@@ -337,6 +569,8 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
                     }
                 }
                 std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;
+                std::pair<float,float> poids = getPoidsSolPareto(code);
+                std::cout << " --> (D:" << poids.first << ",P:" << poids.second << ")"<< std::endl;
             }
         }
     }

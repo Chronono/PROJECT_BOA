@@ -25,6 +25,8 @@ class Sommet
         std::string getId() const;
         double getX() const;
         double getY() const;
+        double getX();
+        double getY();
         int getDeg() const;
         ~Sommet();
 

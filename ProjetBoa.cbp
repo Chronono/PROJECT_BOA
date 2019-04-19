@@ -2,28 +2,29 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Projet Boa" />
+		<Option title="tetstete" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/Projet Boa" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/tetstete" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include" />
 				</Compiler>
+				<Linker>
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/liballeg44.dll.a" />
+				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/Projet Boa" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/tetstete" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -38,11 +39,15 @@
 		<Unit filename="Priority_queue.h" />
 		<Unit filename="arete.cpp" />
 		<Unit filename="arete.h" />
+		<Unit filename="boutton.cpp" />
+		<Unit filename="boutton.h" />
 		<Unit filename="graph.cpp" />
 		<Unit filename="graph.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="sommet.cpp" />
 		<Unit filename="sommet.h" />
+		<Unit filename="utilalleg.cpp" />
+		<Unit filename="utilalleg.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

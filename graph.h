@@ -23,8 +23,15 @@ class graphe
         std::unordered_map<std::string, std::string> Dijkstra(std::string Vstart);
         std::list<Arete*> parcoursPrim(bool);
         double getDistance(std::string v1, std::string v2);
+        std::pair<float,float> getPoidsSolPareto(std::string);
+        std::vector<std::string> getFrontiereSolPareto();
         int getOrder() const;
         int getSize() const;
+        int isEulerien() const;
+        void afficherPrim(std::list<Arete*>, int);
+        void AfficherDistance();
+        void AfficherCost();
+        void AfficherBoth();
         int isEulerien(std::unordered_map<std::string,Sommet*> vertices) const;
 
     protected:
@@ -41,6 +48,9 @@ class graphe
         void updateDist(std::string v1, std::string v2, std::unordered_map<std::string, int>& distances, std::unordered_map<std::string, std::string>& path);
 
         /// attributes
+        std::list<Arete*> primDistance;
+        std::list<Arete*> primCost;
+        std::vector<std::string> m_solutionsdepareto;
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
         std::unordered_map<std::string,Arete*> m_aretes;
 };
