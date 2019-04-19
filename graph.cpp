@@ -1,6 +1,5 @@
 #include <math.h>
 #include "graph.h"
-#include <math.h>
 
 graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
 {
@@ -24,6 +23,7 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
             std::string id, v1, v2;
             fichier >> id >> v1 >> v2;
             m_aretes.emplace(id, new Arete(id,v1,v2));
+            m_aretes.find(id)->second->setDistance(getDistance(v1,v2));
             m_vertices.find(v1)->second->ajouterVoisin(m_vertices.find(v2)->second, m_aretes.find(id)->second);
             m_vertices.find(v2)->second->ajouterVoisin(m_vertices.find(v1)->second, m_aretes.find(id)->second);
         }
@@ -42,18 +42,21 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
     fichier_weight >> size >> nbDim;
     for (int i=0; i < size; i++) {
         std::string id;
-        float distance, cost;
-        fichier_weight >> id >> distance >> cost;
-        m_aretes.find(id)->second->setDistance(distance);
-        m_aretes.find(id)->second->setCost(cost);
+        float cost1, cost2;
+        fichier_weight >> id >> cost1 >> cost2;
+        m_aretes.find(id)->second->setCost1(cost1);
+        m_aretes.find(id)->second->setCost2(cost2);
     }
 
     /// fermeture du fichier_weight
     fichier_weight.close();
 
-    /// génération de tous les schémasa possibles du graphe
-    std::vector<std::string> test = gen_binSolution();
-    std::vector<std::string> solutionsdepareto = pareto(test);
+    /// application de Dijkstra à chaque sommets
+    for (auto i : m_vertices)
+        i.second->setPaths(Dijkstra(i.second->getId()));
+
+    std::cout << "\naffiche du chemin du sommet 4 vers le sommet 0 :  ";
+    m_vertices.find("0")->second->displayPath("7");
 }
 
 void graphe::display() const{
@@ -71,6 +74,93 @@ void graphe::display() const{
         std::cout << " Arete ";
         i.second->display();
     }
+}
+
+void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances)
+{
+    for (auto v = G.begin(); v != G.end(); v++) {
+        distances.emplace(v->second->getId(), getTotDistance());
+    }
+    distances.find(Vstart)->second = 0;
+    /// affiche distances
+    //for (auto d : distances) { std::cout << "distance de " << d.first << " par rapport a " << Vstart << " : " << d.second << std::endl; }
+}
+
+std::string graphe::findMin(std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances) const
+{
+    //std::cout << "FIND_MIN :\n";
+    int mini = getTotDistance() + 1;
+    //std::cout << "mini = " << mini;
+    std::string v = "empty";
+    //std::cout << "   v = " << v << std::endl;
+    for (auto v_it = G.begin(); v_it != G.end(); v_it++) {
+        if (distances.find(v_it->first)->second < mini) {
+            mini = distances.find(v_it->first)->second;
+            //std::cout << "mini = " << mini;
+            v = v_it->first;
+            //std::cout << "   v = " << v << std::endl;
+        }
+    }
+    //std::cout << "sortie de FIND_MIN\n" << std::endl;
+    return v;
+}
+
+void graphe::updateDist(std::string v1, std::string v2, std::unordered_map<std::string, int>& distances, std::unordered_map<std::string, std::string>& path)
+{
+    //std::cout << "UPDATE_DIST :\n";
+    if (distances.find(v2)->second > distances.find(v1)->second + getDistance(v1, v2)) {
+        //std::cout << "distances.find(" << v2 << ")->second > distances.find(" << v1 << ")->second + getDistance(" << v1 << ", " << v2 << ") : VRAI" << std::endl;
+        distances.find(v2)->second = distances.find(v1)->second + getDistance(v1, v2);
+        //std::cout << "distances.find(" << v2 << ")->second = " << distances.find(v1)->second + getDistance(v1, v2) << std::endl;
+        if (!path.count(v2)) {
+            path.emplace(v2,v1);
+            //std::cout << "path.emplace(" << v2 << ", " << v1 << ")" << std::endl;
+        }
+        else {
+            path.find(v2)->second = v1;
+            //std::cout << "path.find(" << v2 << ")->second = " << v1 << std::endl;
+        }
+    }
+    //else
+        //std::cout << "distances.find(" << v2 << ")->second > distances.find(" << v1 << ")->second + getDistance(" << v1 << ", " << v2 << ") : FAUX" << std::endl;
+
+    //std::cout << "sortie de UPDATE_DIST\n" << std::endl;
+}
+
+std::unordered_map<std::string, std::string> graphe::Dijkstra(std::string Vstart)
+{
+    //std::cout << "Lancement de Dijkstra\n" << std::endl;
+    std::unordered_map<std::string, Sommet*> G = m_vertices;
+    //std::cout << "nombre de sommets dans G : " << G.size() << std::endl;
+    /// affiche le graphe
+    //for (auto i : G) { std::cout << i.first << " / "; } std::cout << std::endl;
+    std::unordered_map<std::string, int> distances;
+    //if (distances.empty()) { std::cout << "'distance' est vide" << std::endl; }
+    //else { std::cout << "'distance' n'est pas vide. taille = " << distances.size() << std::endl; }
+    std::unordered_map<std::string, std::string> path; /// <sommet , prédécesseur>
+    //if (path.empty()) { std::cout << "'path' est vide" << std::endl; }
+    //else { std::cout << "'path' n'est pas vide. taille = " << path.size() << std::endl; }
+    std::string v;
+
+    //std::cout << "\nDebut de l'initialisation..." << std::endl;
+    initDijkstra(Vstart, G, distances);
+    //std::cout << "...Fin de l'initialisation\n" << std::endl;
+    while (!G.empty()) {
+        v = findMin(G, distances);
+        //std::cout << "v prend " << v << std::endl;
+        G.erase(v);
+        /// affiche le graphe
+        //for (auto i : G) { std::cout << i.first << " / "; } std::cout << std::endl;
+
+        auto tab_id = m_vertices.find(v)->second->getVoisinsId();
+        for (std::string voisinID : tab_id) {
+            updateDist(v, voisinID, distances, path);
+        }
+        /// affiche distances
+        //std::cout << "\nnouvelles distances :\n";
+        //for (auto d : distances) { std::cout << "distance de " << d.first << " par rapport a " << Vstart << " : " << d.second << std::endl; }
+    }
+    return path;
 }
 
 std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, prim fct distance sinon fct cost
@@ -103,6 +193,17 @@ std::list<Arete*> graphe::parcoursPrim(bool choice){        /// choice = false, 
     return primArete;
 }
 
+double graphe::getDistance(std::string v1, std::string v2)
+{
+    double x1 = m_vertices.find(v1)->second->getX(),
+           y1 = m_vertices.find(v1)->second->getY(),
+           x2 = m_vertices.find(v2)->second->getX(),
+           y2 = m_vertices.find(v2)->second->getY(),
+           distance = sqrt(pow(abs((int)(x1 - x2)), 2) + pow(abs((int)(y1 - y2)), 2));
+
+    return distance;
+}
+
 int graphe::getOrder() const
 {
     return m_vertices.size();
@@ -123,6 +224,15 @@ int graphe::isEulerien(std::unordered_map<std::string,Sommet*> vertices) const{
     else if (compt == 2)
         return 1;
     else return 0;
+}
+
+double graphe::getTotDistance() const
+{
+    double totDist = 0;
+    for (auto a : m_aretes) {
+        totDist += a.second->getDistance();
+    }
+    return totDist;
 }
 
 /// SOURCE DU CODE DU CONVERTISSEUR BINAIRE : INTERNET (+ modifications personnelles) ///
@@ -154,9 +264,35 @@ std::vector<std::string> graphe::gen_binSolution()
     return solutions;
 }
 
+std::vector<std::string> graphe::getGPCC(std::vector<std::string>& combinaisons)
+{
+    std::cout << "\nGraphes partiels couvrants connexes :\n";
+    std::vector<std::string> solutions;
+
+    /// pour chaque schéma :
+    for (std::string code : combinaisons) {
+        /// si le nombre de sommets conectés est égal au nombre de sommets en tout, le graphe n'est pas eulérien
+        std::unordered_set<std::string> visited;
+        for (unsigned int i=0; i < code.size(); i++)
+        {
+            if (code[i] == '1') {
+                char ind[m_aretes.size()];
+                sprintf(ind,"%d",i);
+                std::string v1 = m_aretes.find(ind)->second->getVertex1();
+                std::string v2 = m_aretes.find(ind)->second->getVertex2();
+                if (!visited.count(v1))
+                    visited.emplace(v1);
+                if (!visited.count(v2))
+                    visited.emplace(v2);
+            }
+        }
+    }
+    return solutions;
+}
+
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
 {
-    std::cout << "Solutions de pareto :" << std::endl;
+    std::cout << "\nSolutions de pareto :" << std::endl;
     std::vector<std::string> paretoSolutions;
 
     /// pour chaque schéma :
@@ -191,13 +327,13 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
                 std::cout << code;
                 int poid1=0;
                 int poid2=0;
-                for (int i = 0; i < code.size();i++) {
+                for (unsigned int i = 0; i < code.size();i++) {
                     char ind[m_aretes.size()];
                     sprintf(ind, "%d", (code.size() -1) - i);
                     std::cout << "  ind : " << ind;
                     if (code[i] == '1'){
-                    poid1 += m_aretes.find(ind)->second->getDistance();
-                    poid2 += m_aretes.find(ind)->second->getCost();
+                    poid1 += m_aretes.find(ind)->second->getCost1();
+                    poid2 += m_aretes.find(ind)->second->getCost2();
                     }
                 }
                 std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;

@@ -26,25 +26,36 @@ std::string Arete::getVertex2() const
     return m_vertex2;
 }
 
-float Arete::getDistance() const
+float Arete::getCost1() const
+{
+    return m_cost1;
+}
+
+float Arete::getCost2() const
+{
+    return m_cost2;
+}
+
+double Arete::getDistance() const
 {
     return m_distance;
 }
 
-float Arete::getCost() const
-{
-    return m_cost;
+void Arete::setCost1(float cost){
+    m_cost1 = cost;
 }
 
-void Arete::setDistance(float dist){
-    m_distance = dist;
+void Arete::setCost2(float cost){
+    m_cost2 = cost;
 }
-void Arete::setCost(float cost){
-    m_cost = cost;
+
+void Arete::setDistance(double dist)
+{
+    m_distance = dist;
 }
 
 void Arete::display() const{
-    std::cout<< "arete number "<< m_id <<"\n(sommet " << m_vertex1 << " to sommet " << m_vertex2 << ")\ncost : " << m_cost << " and distance : " << m_distance << std::endl;
+    std::cout<< "arete number "<< m_id <<"\n(sommet " << m_vertex1 << " to sommet " << m_vertex2 << ")\ncost1 : " << m_cost1 << " and cost2 : " << m_cost2 << std::endl;
 }
 
 Arete::~Arete()

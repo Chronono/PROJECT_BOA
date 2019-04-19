@@ -15,17 +15,20 @@ public:
     std::string getVertex1() const;
     std::string getVertex2() const;
     void display() const;
-    void setDistance(float);
-    void setCost(float);
-    float getDistance() const;
-    float getCost() const;
+    void setCost1(float);
+    void setCost2(float);
+    void setDistance(double);
+    float getCost1() const;
+    float getCost2() const;
+    double getDistance() const;
     ~Arete();
 private:
     std::string m_id;
     std::string m_vertex1; /// sommet 1
     std::string m_vertex2; /// sommet 2
-    float m_distance;
-    float m_cost;
+    float m_cost1;
+    float m_cost2;
+    double m_distance;
 };
 
 #endif // ARETE_H_INCLUDED

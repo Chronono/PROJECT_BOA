@@ -3,7 +3,7 @@
 
 int main()
 {
-    graphe testCubeTown("broadway.txt","broadway_weights_0.txt");
+    graphe testCubeTown("cubetown.txt","cubetown_weights_0.txt");
 
     return 0;
 }
