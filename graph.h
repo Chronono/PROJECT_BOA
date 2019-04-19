@@ -20,7 +20,9 @@ class graphe
         graphe(std::string,std::string);
         ~graphe();
         void display() const;
+        std::unordered_map<std::string, std::string> Dijkstra(std::string Vstart);
         std::list<Arete*> parcoursPrim(bool);
+        double getDistance(std::string v1, std::string v2);
         std::pair<float,float> getPoidsSolPareto(std::string);
         std::vector<std::string> getFrontiereSolPareto(bool);
         int getOrder() const;
@@ -36,9 +38,14 @@ class graphe
 
     private:
         /// functions
+        double getTotDistance() const;
         std::string toBinary(int n);
         std::vector<std::string> gen_binSolution();
+        std::vector<std::string> getGPCC(std::vector<std::string>& combinaisons);
         std::vector<std::string> pareto(std::vector<std::string>& combinaisons);
+        std::string findMin(std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances) const;
+        void initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances);
+        void updateDist(std::string v1, std::string v2, std::unordered_map<std::string, int>& distances, std::unordered_map<std::string, std::string>& path);
 
         /// attributes
         std::list<Arete*> primDistance;

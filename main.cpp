@@ -10,9 +10,6 @@
 
 int main()
 {
-    // Integrer pareto comme Prim
-    // Verifier que pas de pb d'echelle (Autres fichier weight)
-    // Creer l'Affichage Dikjtra
     initialisation();
     return 0;
 }
