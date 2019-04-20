@@ -45,11 +45,19 @@ void addLine(std::string path)
 {
     std::string valeur;
     std::cin >> valeur;
-    std::ifstream file1(valeur + ".txt", std::ios::in);
-    std::ifstream file2(valeur + "_weights_0.txt", std::ios::in);
+    std::string tampon = valeur;
+    std::unordered_set<std::string> test;
+    test.emplace("0");
+    test.emplace("1");
+    test.emplace("2");
+    for(auto essai : test)
+    {
+        valeur = tampon;
+        std::ifstream file1(valeur + ".txt", std::ios::in);
+        std::ifstream file2(valeur + "_weights_" + essai + ".txt", std::ios::in);
+        valeur = valeur + essai;
     if(file1 && file2)
     {
-    //int j=0;
     std::string ligne;
     std::vector<std::string> file;
     std::ifstream fichier1(path, std::ios::in);
@@ -81,6 +89,7 @@ void addLine(std::string path)
     }else   allegro_message("Nom de Graphe non existant");
     file1.close();
     file2.close();
+    }
 }
 
 
@@ -260,12 +269,15 @@ std::string menuCharger()
                     {
                         std::cout<< "Mode Supprimer Desactive" << std::endl;
                         supprimer = 0;
+                        initFichier(fichier,&ligne);
+                        afficherBase(Villes,font1,&k,&x,&y);
                     }
                 }else if(choix == "Ajouter")
                 {
                     std::cout << "Veuillez selectionner le graphe a ajouter : "<< std::endl;
                     addLine("Villes.txt");
                     initFichier(fichier,&ligne);
+
                     afficherBase(Villes,font1,&k,&x,&y);
                 }
                 else if(choix == "Retour")  condition = 1;
@@ -341,14 +353,23 @@ double PdsDistance;
 }
 
 
-void AfficherGraphe(std::string choix)
+void AfficherGraphe(std::string valeur)
 {
-                std::string weight = choix + "_weights_0.txt";
+    int taillestring = valeur.size();
+    std::string choix = "";
+    for(int k = 0 ; k<taillestring-1; k++)
+    {
+        choix = choix + valeur[k];
+    }
+                std::string tamp;
+                tamp = valeur[taillestring-1];
+                std::string weight = choix + "_weights_" + tamp + ".txt";
                 bool fin = false, prim1 = false, prim2 = false, par = false, gdist = false;
                 boutton temp;
                 std::string selection;
                 std::vector<boutton> bouttons, paret;
                 choix = choix + ".txt";
+                std::cout << choix << "  /  " << weight << std::endl;
                 graphe g(choix,weight);
                 FONT * font1 = load_font("fontsommet.pcx",NULL,NULL);
                 AfficherDistCost(g,font1, prim1, prim2);
@@ -475,8 +496,6 @@ void initialisation()
             break;
 
         case leaveLoop:
-            graphe g("cubetown.txt","cubetown_weights_0.txt");
-            test =g.Dijkstra("0");
             return ;
             break;
         }
