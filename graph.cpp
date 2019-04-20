@@ -183,6 +183,40 @@ FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
     }
 }
 
+std::unordered_map<std::string,Sommet*> graphe::getVertices(){
+    return m_vertices;
+}
+
+
+void graphe::AfficherDijkstra(std::string ind){
+    Dijkstra(ind);
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    for (auto i : dijkstraArete) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, makecol(200,0,200));
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
+}
+
 void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances)
 {
     for (auto v = G.begin(); v != G.end(); v++) {
@@ -267,6 +301,17 @@ std::unordered_map<std::string, std::string> graphe::Dijkstra(std::string Vstart
         //std::cout << "\nnouvelles distances :\n";
         //for (auto d : distances) { std::cout << "distance de " << d.first << " par rapport a " << Vstart << " : " << d.second << std::endl; }
     }
+    dijkstraArete.clear();
+    for(auto i : path)
+            {
+                for(auto k : m_aretes)
+                {
+                    if((k.second->getVertex1() == i.first && k.second->getVertex2() == i.second) || (k.second->getVertex1() == i.second && k.second->getVertex2() == i.first))
+                    {
+                        dijkstraArete.push_back(k.second);
+                    }
+                }
+            }
     return path;
 }
 

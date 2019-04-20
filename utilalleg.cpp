@@ -124,10 +124,43 @@ std::string chooseVille(std::vector<boutton> page)
                     k=0;
                 }
             }
+
         }
     }
     return result;
 }
+
+std::string chooseGraphe(std::vector<boutton> page, graphe g)
+{
+    int j=1;
+    std::string result;
+    std::unordered_map<std::string,Sommet*> vertices = g.getVertices();
+    while(j==1)
+    {
+        if (mouse_b == 1)
+        {
+            for (auto i = page.begin(); i != page.end(); ++i)
+            {
+                if (mouse_x>=i->getX() && mouse_x<=(i->getX()+(i->getSizeLigne()*24)) && mouse_y >=i->getY() && mouse_y <=i->getY()+30)
+                {
+                    result = i->getLigne();
+                    j=0;
+                }
+            }
+            for(auto k : vertices)
+            {
+                if(mouse_x>=k.second->getX() && mouse_x<=k.second->getX()+50 && mouse_y >=k.second->getY() && mouse_y <=k.second->getY()+50)
+                {
+                    result = k.second->getId();
+                    j=0;
+                }
+            }
+
+        }
+    }
+    return result;
+}
+
 
 void afficherBase(BITMAP* Villes,FONT* font1,int* k, int* x, int* y){
                     draw_sprite(screen,Villes,0,0);
@@ -331,7 +364,7 @@ void AfficherGraphe(std::string choix)
                 bouttons.push_back(temp);
                 while(fin == false && par == false)
                 {
-                    selection = chooseVille(bouttons);
+                    selection = chooseGraphe(bouttons, g);
                     rest(100);
                     if(selection == "Cout 1")
                     {
@@ -367,6 +400,14 @@ void AfficherGraphe(std::string choix)
                     g.AfficherCost();
                     g.AfficherBoth();
                 }
+                for(auto k : g.getVertices())
+                    {
+                        if(k.second->getId() == selection)
+                        {
+                            AfficherDistCost(g,font1,prim1,prim2);
+                            g.AfficherDijkstra(selection);
+                        }
+                    }
                 while (par == true)
                 {
                         AfficherGraphique("Cout 1", "Cout 2");
@@ -417,6 +458,7 @@ void initialisation()
     show_mouse(screen);
     status optionMenu = menuLoop;
     std::string choix, weight;
+    std::unordered_map<std::string,std::string>  test;
     while (!key[KEY_ESC])
     {
         switch (optionMenu)
@@ -433,6 +475,8 @@ void initialisation()
             break;
 
         case leaveLoop:
+            graphe g("cubetown.txt","cubetown_weights_0.txt");
+            test =g.Dijkstra("0");
             return ;
             break;
         }

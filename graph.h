@@ -30,12 +30,14 @@ class graphe
         double getTotDistance(const std::unordered_map<std::string,Arete*>& A) const;
         int getOrder() const;
         int getSize() const;
+        std::unordered_map<std::string,Sommet*> getVertices();
         int isEulerien() const;
         void afficherPrim(std::list<Arete*>, int);
         void AfficherDistance();
         void AfficherCost();
         void AfficherBoth();
         int isEulerien(std::unordered_map<std::string,Sommet*> vertices) const;
+        void AfficherDijkstra(std::string ind);
 
     protected:
 
@@ -51,6 +53,7 @@ class graphe
 
         /// attributes
         std::list<Arete*> primDistance;
+        std::list<Arete*> dijkstraArete;
         std::list<Arete*> primCost;
         std::vector<std::string> m_solutionsdepareto;
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
