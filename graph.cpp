@@ -472,52 +472,52 @@ std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false re
         else
         {
             std::pair<float,float> poidTest = getPoidsSolPareto(i);
-            for (auto j : tabParetoDominant)
+            //for (auto j : tabParetoDominant)
             size_t sizeDominantInstantT = tabParetoDominant.size();
             bool placed = false;
             while (placed == false){
-            for (unsigned int j = 0; j < sizeDominantInstantT; j++)
-            {
-                std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
-                std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
-                std::cout << "Debug #4 -> boucle dominante + poidSolPareto : (" << poidTest.first << "," << poidTest.second << "), poid du dominant : (" << poidDominant.first << "," << poidDominant.second << ")" << std::endl;
-                if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
-                    std::cout << "Debug #5 -> solution domine\n";
-                    tabParetoDomine.push_back(i);
-                    placed = true;
-                    break;
-                    }
-                else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
+                for (size_t j = 0; j < sizeDominantInstantT; j++)
                 {
-                    std::cout << "Debug #5_1 -> solution dominante\n";
-                    tabParetoDominant.push_back(i);
-                    tabParetoDomine.push_back(tabParetoDominant[j]);
-                    tabParetoDominant.erase(tabParetoDominant.begin() + j);
-                    std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
-                    placed=true;
-                }
-                else if ((int)j == (int)sizeDominantInstantT-1){
-                    std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
-                    tabParetoDominant.push_back(i);
-                    placed = true;
-                }
-                    /*
-                else if (j == tabParetoDominant[tabParetoDominant.size()])
-                {
-                    tabParetoDominant.push_back(j);
-                    for (int k = 0; k < tabParetoDominant.size(); k++)
+                    std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
+                    std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
+                    std::cout << "Debug #4 -> boucle dominante + poidSolPareto : (" << poidTest.first << "," << poidTest.second << "), poid du dominant : (" << poidDominant.first << "," << poidDominant.second << ")" << std::endl;
+                    if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
+                        std::cout << "Debug #5 -> solution domine\n";
+                        tabParetoDomine.push_back(i);
+                        placed = true;
+                        break;
+                        }
+                    else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
                     {
-                        if (tabParetoDominant[k] != j){
-                            std::pair<float,float> poidDominantTest = getPoidsSolPareto(tabParetoDominant[k]);
-                            if (poidDominant.first < poidDominantTest.first && poidDominant.second < poidDominantTest.second)
-                            {
-                                tabParetoDomine.push_back(tabParetoDominant[k]);
-                                tabParetoDominant.erase(tabParetoDominant.begin() + k);
+                        std::cout << "Debug #5_1 -> solution dominante\n";
+                        tabParetoDominant.push_back(i);
+                        tabParetoDomine.push_back(tabParetoDominant[j]);
+                        tabParetoDominant.erase(tabParetoDominant.begin() + j);
+                        std::cout << "Debug #5_2 -> solution dominante ajoute et domine retire\n";
+                        placed=true;
+                    }
+                    else if ((int)j == (int)sizeDominantInstantT-1){
+                        std::cout << "Debug #6 -> pas de solution dominante, donc elle meme ajoute en tant que dominant\n";
+                        tabParetoDominant.push_back(i);
+                        placed = true;
+                    }
+                        /*
+                    else if (j == tabParetoDominant[tabParetoDominant.size()])
+                    {
+                        tabParetoDominant.push_back(j);
+                        for (int k = 0; k < tabParetoDominant.size(); k++)
+                        {
+                            if (tabParetoDominant[k] != j){
+                                std::pair<float,float> poidDominantTest = getPoidsSolPareto(tabParetoDominant[k]);
+                                if (poidDominant.first < poidDominantTest.first && poidDominant.second < poidDominantTest.second)
+                                {
+                                    tabParetoDomine.push_back(tabParetoDominant[k]);
+                                    tabParetoDominant.erase(tabParetoDominant.begin() + k);
+                                }
                             }
                         }
-                    }
-                }*/
-            }
+                    }*/
+                }
             }
         }
     }
