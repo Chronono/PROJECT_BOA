@@ -58,13 +58,10 @@ graphe::graphe(std::string nom_fichier,std::string nom_fichier_weight)
     for (auto i : m_vertices)
         i.second->setPaths(Dijkstra(i.second->getId()));
 
-    std::cout << "\naffiche du chemin du sommet 4 vers le sommet 0 :  ";
     m_vertices.find("0")->second->displayPath("7");
 
     primDistance = parcoursPrim(false);
     primCost = parcoursPrim(true);
-    std::vector<std::string> test = gen_binSolution();
-    m_solutionsdepareto = pareto(test);
 }
 
 void graphe::afficherPrim(std::list<Arete*> prim, int couleur){
@@ -186,10 +183,44 @@ FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
     }
 }
 
+std::unordered_map<std::string,Sommet*> graphe::getVertices(){
+    return m_vertices;
+}
+
+
+void graphe::AfficherDijkstra(std::string ind){
+    Dijkstra(ind);
+    FONT * fontsommet = load_font("fontsommet.pcx",NULL,NULL);
+    BITMAP* cercle = load_bitmap("cercle.bmp",NULL);
+    double x1 = 0 , x2 = 0 ,y1 = 0 , y2 = 0, marge = 0;
+    for (auto i : dijkstraArete) {
+        for (auto j : m_vertices){
+            if(j.second->getId() == i->getVertex1())
+            {
+                x1 = j.second->getX() + 25;
+                y1 = j.second->getY() + 25;
+            }
+            if(j.second->getId() == i->getVertex2())
+            {
+                x2 = j.second->getX() + 25;
+                y2 = j.second->getY() + 25;
+            }
+        }
+        line(screen, x1, y1, x2, y2, makecol(200,0,200));
+        textprintf_ex(screen,fontsommet,(x1+x2)/2,(y1+y2)/2,makecol(0,150,0),-1,i->getId().c_str());
+    }
+    for (auto i : m_vertices){
+        draw_sprite(screen,cercle,i.second->getX(),i.second->getY());
+        if(i.second->getId().size() == 1) marge = 20;
+        else marge = 12;
+        textprintf_ex(screen,fontsommet,i.second->getX() + marge,i.second->getY() + 12,makecol(0,0,0),-1,i.second->getId().c_str());
+    }
+}
+
 void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances)
 {
     for (auto v = G.begin(); v != G.end(); v++) {
-        distances.emplace(v->second->getId(), getTotDistance());
+        distances.emplace(v->second->getId(), getTotDistance(m_aretes));
     }
     distances.find(Vstart)->second = 0;
     /// affiche distances
@@ -199,7 +230,7 @@ void graphe::initDijkstra(std::string Vstart, std::unordered_map<std::string, So
 std::string graphe::findMin(std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances) const
 {
     //std::cout << "FIND_MIN :\n";
-    int mini = getTotDistance() + 1;
+    int mini = getTotDistance(m_aretes) + 1;
     //std::cout << "mini = " << mini;
     std::string v = "empty";
     //std::cout << "   v = " << v << std::endl;
@@ -270,6 +301,17 @@ std::unordered_map<std::string, std::string> graphe::Dijkstra(std::string Vstart
         //std::cout << "\nnouvelles distances :\n";
         //for (auto d : distances) { std::cout << "distance de " << d.first << " par rapport a " << Vstart << " : " << d.second << std::endl; }
     }
+    dijkstraArete.clear();
+    for(auto i : path)
+            {
+                for(auto k : m_aretes)
+                {
+                    if((k.second->getVertex1() == i.first && k.second->getVertex2() == i.second) || (k.second->getVertex1() == i.second && k.second->getVertex2() == i.first))
+                    {
+                        dijkstraArete.push_back(k.second);
+                    }
+                }
+            }
     return path;
 }
 
@@ -379,10 +421,10 @@ int graphe::isEulerien(std::unordered_map<std::string,Sommet*> vertices) const{
     else return 0;
 }
 
-double graphe::getTotDistance() const
+double graphe::getTotDistance(const std::unordered_map<std::string,Arete*>& A) const
 {
     double totDist = 0;
-    for (auto a : m_aretes) {
+    for (auto a : A) {
         totDist += a.second->getDistance();
     }
     return totDist;
@@ -407,34 +449,46 @@ std::string graphe::toBinary(int n)
 
 std::vector<std::string> graphe::gen_binSolution()
 {
-    int nbSolutions = pow(2,getSize());
+    int nbSolutions = pow(2, getSize());
     std::vector<std::string> solutions;
-    for (int i=0; i < nbSolutions; i++)
+    for (int i=0; i < nbSolutions; i++) {
         solutions.push_back(toBinary(i));
+    }
 
     return solutions;
 }
 
-std::vector<std::string> graphe::getGPCC(std::vector<std::string>& combinaisons)
+std::vector<std::string> graphe::getGPCC(std::vector<std::string> combinaisons)
 {
-    std::cout << "\nGraphes partiels couvrants connexes :\n";
     std::vector<std::string> solutions;
 
     /// pour chaque schéma :
-    for (std::string code : combinaisons) {
-        /// si le nombre de sommets conectés est égal au nombre de sommets en tout, le graphe n'est pas eulérien
-        std::unordered_set<std::string> visited;
-        for (unsigned int i=0; i < code.size(); i++)
-        {
-            if (code[i] == '1') {
-                char ind[m_aretes.size()];
-                sprintf(ind,"%d",i);
-                std::string v1 = m_aretes.find(ind)->second->getVertex1();
-                std::string v2 = m_aretes.find(ind)->second->getVertex2();
-                if (!visited.count(v1))
-                    visited.emplace(v1);
-                if (!visited.count(v2))
-                    visited.emplace(v2);
+    for (std::string bin_code : combinaisons) {
+        /// calcul du nombre d'arêtes dans le schéma
+        unsigned int nbArete(0);
+        for (unsigned int i=0; i < bin_code.size(); i++)
+            if (bin_code[i] == '1')
+                nbArete++;
+
+        /// si le schéma étudier à "nbSommets-1" arêtes, alors on peux poursuivre les calculs
+        if (nbArete >= m_vertices.size() - 1) {
+            /// si le nombre de sommets conectés est égal au nombre de sommets en tout, le graphe est un Graphe Partiel Couvrant Conexe
+            std::unordered_set<std::string> visited;
+            for (unsigned int i=0; i < bin_code.size(); i++)
+            {
+                if (bin_code[i] == '1') {
+                    char ind[m_aretes.size()];
+                    sprintf(ind,"%d",i);
+                    std::string v1 = m_aretes.find(ind)->second->getVertex1();
+                    std::string v2 = m_aretes.find(ind)->second->getVertex2();
+                    if (!visited.count(v1))
+                        visited.emplace(v1);
+                    if (!visited.count(v2))
+                        visited.emplace(v2);
+                }
+                if (visited.size() == m_vertices.size()) {
+                    solutions.push_back(bin_code);
+                }
             }
         }
     }
@@ -457,26 +511,61 @@ std::pair<float,float> graphe::getPoidsSolPareto(std::string code_bin){
     return poids;
 }
 
+std::unordered_map<std::string,Arete*> graphe::getMapAreteDistance(std::string code_bin){
+    std::unordered_map<std::string,Arete*> Aretes;
+    for (unsigned int i = 0; i < code_bin.size(); i++)
+    {
+        char ind[m_aretes.size()];
+        sprintf(ind, "%d", (code_bin.size() -1) - i);
+        if (code_bin[i] == '1')
+        {
+            Aretes.emplace(m_aretes.find(ind)->second->getId(),m_aretes.find(ind)->second);
+        }
+    }
+    return Aretes;
+}
+
+
+
 std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false return dominé true dominant
 {
     std::vector<std::string> tabParetoDomine;
     std::vector<std::string> tabParetoDominant;
+    std::vector<std::string> test = gen_binSolution();
+    m_solutionsdepareto = pareto(test);
 
     for (auto i : m_solutionsdepareto)
     {
-        std::cout << "Debug #1 -> boucle sol Pareto\n";
         if (tabParetoDominant.empty()==true){
             tabParetoDominant.push_back(i);
-            std::cout << "Debug #2 -> pas de dominant, on ajoute le refentiel dominant\n";
         }
         else
         {
             std::pair<float,float> poidTest = getPoidsSolPareto(i);
-            //for (auto j : tabParetoDominant)
             size_t sizeDominantInstantT = tabParetoDominant.size();
             bool placed = false;
             while (placed == false){
-                for (size_t j = 0; j < sizeDominantInstantT; j++)
+            for (unsigned int j = 0; j < sizeDominantInstantT; j++)
+            {
+                std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
+                if (poidTest.first > poidDominant.first && poidTest.second > poidDominant.second){
+                    tabParetoDomine.push_back(i);
+                    placed = true;
+                    break;
+                    }
+                else if (poidTest.first < poidDominant.first && poidTest.second < poidDominant.second)
+                {
+                    tabParetoDominant.push_back(i);
+                    tabParetoDomine.push_back(tabParetoDominant[j]);
+                    tabParetoDominant.erase(tabParetoDominant.begin() + j);
+                    placed=true;
+                }
+                else if ((int)j == (int)sizeDominantInstantT-1){
+                    tabParetoDominant.push_back(i);
+                    placed = true;
+                }
+                    /*
+                else if (j == tabParetoDominant[tabParetoDominant.size()])
                 {
                     std::cout << "Debug #3 -> j : " << j << " < " << sizeDominantInstantT << std::endl;
                     std::pair<float,float> poidDominant = getPoidsSolPareto(tabParetoDominant[j]);
@@ -501,7 +590,7 @@ std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false re
                         tabParetoDominant.push_back(i);
                         placed = true;
                     }
-                        /*
+
                     else if (j == tabParetoDominant[tabParetoDominant.size()])
                     {
                         tabParetoDominant.push_back(j);
@@ -523,16 +612,13 @@ std::vector<std::string> graphe::getFrontiereSolPareto(bool choice) /// false re
     }
 
     for (auto i : tabParetoDominant)
-        std::cout << "pareto dominant : " << i << std::endl;
     if (choice==true)
         return tabParetoDominant;
-    else
-        return tabParetoDomine;
+    return tabParetoDomine;
 }
 
 std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
 {
-    std::cout << "\nSolutions de pareto :" << std::endl;
     std::vector<std::string> paretoSolutions;
 
     /// pour chaque schéma :
@@ -564,21 +650,17 @@ std::vector<std::string> graphe::pareto(std::vector<std::string>& combinaisons)
             }
             if (visited.size() == m_vertices.size()) {
                 paretoSolutions.push_back(code);
-                std::cout << code;
                 int poid1=0;
                 int poid2=0;
                 for (unsigned int i = 0; i < code.size();i++) {
                     char ind[m_aretes.size()];
                     sprintf(ind, "%d", (code.size() -1) - i);
-                    std::cout << "  ind : " << ind;
                     if (code[i] == '1'){
                     poid1 += m_aretes.find(ind)->second->getCost1();
                     poid2 += m_aretes.find(ind)->second->getCost2();
                     }
                 }
-                std::cout << " --> (D:" << poid1 << ",P:" << poid2 << ")"<< std::endl;
-                std::pair<float,float> poids = getPoidsSolPareto(code);
-                std::cout << " --> (D:" << poids.first << ",P:" << poids.second << ")"<< std::endl;
+                //std::pair<float,float> poids = getPoidsSolPareto(code);
             }
         }
     }

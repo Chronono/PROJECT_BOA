@@ -16,7 +16,7 @@
 	<time.h>
 	<allegro.h>
 
-1555669714 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
+1555785631 source:c:\users\alex\desktop\testallle\tetstete\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"
@@ -93,7 +93,7 @@
 	<queue>
 	"arete.h"
 
-1555669898 c:\users\alex\desktop\testallle\tetstete\graph.h
+1555768740 c:\users\alex\desktop\testallle\tetstete\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -135,14 +135,15 @@
 	<string>
 	<iostream>
 
-1555669389 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
+1555865091 source:c:\users\bastien\projet piscine\projet boa\graph.cpp
 	<math.h>
 	"graph.h"
 	<math.h>
 	"utilalleg.h"
+	"arete.h"
 	<allegro.h>
 
-1555675113 c:\users\bastien\projet piscine\projet boa\graph.h
+1555846441 c:\users\bastien\projet piscine\projet boa\graph.h
 	<fstream>
 	<iostream>
 	<string>
@@ -205,7 +206,7 @@
 
 1555663145 
 
-1555670122 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
+1555769879 source:c:\users\alex\desktop\testallle\tetstete\graph.cpp
 	<math.h>
 	"graph.h"
 	<math.h>
@@ -240,7 +241,7 @@
 	<time.h>
 	<allegro.h>
 
-1555675113 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
+1555851998 source:c:\users\bastien\projet piscine\projet boa\utilalleg.cpp
 	<iostream>
 	<allegro.h>
 	"utilalleg.h"

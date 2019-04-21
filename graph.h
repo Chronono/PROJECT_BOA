@@ -25,24 +25,27 @@ class graphe
         double getDistance(std::string v1, std::string v2);
         float getTotCost(std::string id) const;
         std::pair<float,float> getPoidsSolPareto(std::string);
+        std::unordered_map<std::string,Arete*> getMapAreteDistance(std::string);
         std::vector<std::string> getFrontiereSolPareto(bool);
+        std::vector<std::string> getGPCC(std::vector<std::string> combinaisons);
+        std::vector<std::string> gen_binSolution();
+        double getTotDistance(const std::unordered_map<std::string,Arete*>& A) const;
         int getOrder() const;
         int getSize() const;
+        std::unordered_map<std::string,Sommet*> getVertices();
         int isEulerien() const;
         void afficherPrim(std::list<Arete*>, int);
         void AfficherDistance();
         void AfficherCost();
         void AfficherBoth();
         int isEulerien(std::unordered_map<std::string,Sommet*> vertices) const;
+        void AfficherDijkstra(std::string ind);
 
     protected:
 
     private:
         /// functions
-        double getTotDistance() const;
         std::string toBinary(int n);
-        std::vector<std::string> gen_binSolution();
-        std::vector<std::string> getGPCC(std::vector<std::string>& combinaisons);
         std::vector<std::string> pareto(std::vector<std::string>& combinaisons);
         std::string findMin(std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances) const;
         void initDijkstra(std::string Vstart, std::unordered_map<std::string, Sommet*> G, std::unordered_map<std::string, int>& distances);
@@ -50,6 +53,7 @@ class graphe
 
         /// attributes
         std::list<Arete*> primDistance;
+        std::list<Arete*> dijkstraArete;
         std::list<Arete*> primCost;
         std::vector<std::string> m_solutionsdepareto;
         std::unordered_map<std::string,Sommet*> m_vertices;//stockée dans une map (clé=id du sommet, valeur= pointeur sur le sommet)
